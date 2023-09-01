@@ -1,13 +1,10 @@
 import { ThemeProvider } from "styled-components";
 import GlobalStyles from "./styles/global";
-import darkCyan from "./styles/themes/darkCyan";
 import { MobileNav } from "./components";
-import darkPurple from "./styles/themes/darkPurple";
-import lightCyan from "./styles/themes/lightCyan";
-import lightPurple from "./styles/themes/lightPurple";
 import { useState } from "react";
 import { BrowserRouter, Routes as Switch, Route } from "react-router-dom";
 import { AnimeHome, Home, MangaHome, Profile, Settings } from "./pages";
+import { darkCyan, darkPurple } from "./styles";
 
 function App() {
   const [currentTheme, setCurrentTheme] = useState(darkCyan);
@@ -19,19 +16,17 @@ function App() {
         setCurrentTheme(darkCyan);
       } else if (localStorageTheme === "darkPurple") {
         setCurrentTheme(darkPurple);
-      } else if (localStorageTheme === "lightCyan") {
-        setCurrentTheme(lightCyan);
-      } else if (localStorageTheme === "lightPurple") {
-        setCurrentTheme(lightPurple);
+      } else {
+        setCurrentTheme(darkCyan);
       }
     }
   }, []);
 
   return (
     <ThemeProvider theme={currentTheme}>
+      <GlobalStyles />
+      <MobileNav />
       <BrowserRouter>
-        <GlobalStyles />
-        <MobileNav />
         <Switch>
           {/* <Route path="*" element={<ErrorPage />} /> */}
           <Route path="/" element={<Home />} />

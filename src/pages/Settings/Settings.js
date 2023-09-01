@@ -1,8 +1,12 @@
 import React from "react";
+import { ThemeSelector } from "./components/ThemeSelector";
 
 export const Settings = () => {
 
     return (
-        <h1>Settings</h1>
+        <div>
+            <h1>Settings</h1>
+            <ThemeSelector />
+        </div>
     )
 }

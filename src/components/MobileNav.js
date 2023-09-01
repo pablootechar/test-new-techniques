@@ -68,15 +68,16 @@ const GearIcon = ({ iconHeight, fillColor }) => {
 };
 
 const Navigation = styled.div`
+  position: fixed;
+  bottom: 0;
+  left: 0;
   background: ${({ theme }) => theme.navigationColors.background};
   width: 100%;
   display: flex;
   flex-direction: row;
-  position: fixed;
-  bottom: 0;
-  left: 0;
   height: 40px;
   justify-content: space-around;
+  z-index: 100;
 `;
 
 const NavigationButton = styled.button`
