@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { styled } from "styled-components";
 
-const ScrollButton = () => {
+export const ScrollButton = () => {
   const [visible, setVisible] = useState(false);
 
   const toggleVisible = () => {
@@ -46,5 +46,3 @@ const ScrollButton = () => {
 
   return <ButtonToScroll onClick={scrollToBottom}>Learn more</ButtonToScroll>;
 };
-
-export default ScrollButton;

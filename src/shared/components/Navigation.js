@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import { styled } from "styled-components";
 
 const HomeIcon = ({ iconHeight, fillColor }) => {
@@ -69,7 +68,7 @@ const GearIcon = ({ iconHeight, fillColor }) => {
 
 const Navigation = styled.div`
   position: fixed;
-  bottom: 0;
+  bottom: -2px;
   left: 0;
   background: ${({ theme }) => theme.navigationColors.background};
   width: 100%;
@@ -87,7 +86,7 @@ const NavigationButton = styled.button`
   padding: 0;
 `;
 
-export const MobileNav = () => {
+export const NavigationBar = () => {
   const baseUrl = "http://localhost:3000";
   const switchedUrl = window.location.href.replace(baseUrl, "");
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { darkCyan, darkPurple } from "../../../styles"
+import { darkCyan, darkPurple, darkPink, darkOrange } from "../../../styles"
 import { styled } from "styled-components";
 
 export const ThemeSelector = () => {
@@ -7,6 +7,8 @@ export const ThemeSelector = () => {
     const themes = [
         darkCyan,
         darkPurple,
+        darkPink,
+        darkOrange,
     ]
 
     const setNewTheme = (themeTitle) => {
