@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import { styled } from "styled-components";
 
 const HomeIcon = ({ iconHeight, fillColor }) => {
@@ -87,52 +88,125 @@ const NavigationButton = styled.button`
 `;
 
 export const NavigationBar = () => {
-  const baseUrl = "http://localhost:3000";
-  const switchedUrl = window.location.href.replace(baseUrl, "");
+  const localPathOfIcon = localStorage.getItem("selectedIcon")
+  const [selectedIcon, setSelectedIcon] = useState(localPathOfIcon);
+  const { id, name, episodeNum } = useParams();
+
+  const animeRoutes = [
+    `/anime-page/home`,
+    `/anime-page/${id}/${name}/`,
+    `/anime-page/${id}/${name}/${episodeNum}`,
+    `/anime-page/all-episodes/${id}/${name}`
+  ];
+
+  const mangaRoutes = [
+    `/manga-page/home`,
+    `/manga-page/${id}/${name}/`,
+    `/manga-page/${id}/${name}/${episodeNum}`,
+    `/manga-page/all-episodes/${id}/${name}`
+  ];
+
+  const profileRoutes = [
+    "/profile",
+    "/profile/login"
+  ];
+
+  useEffect(() => {
+    const storedIcon = localStorage.getItem("selectedIcon");
+    if (storedIcon) {
+      setSelectedIcon(storedIcon);
+    } else {
+      setSelectedIcon("/")
+    }
+  }, []);
+
+  const verifyAlternativeRoutes = (path, arrayOfRoutes) => {
+    for (let i = 0; i < arrayOfRoutes.length; i++) {
+      const element = arrayOfRoutes[i];
+
+      if (path === element) {
+        return {
+          baseRoute: arrayOfRoutes[0],
+          currentRoute: element
+        }
+      }
+      
+    }
+  }
 
   const isSelected = (path) => {
-    if (switchedUrl === path) {
+    let urlToCheck = path;
+    const baseUrl = "%PUBLIC_URL%";
+    const switchedUrl = window.location.href.replace(baseUrl, "")
+
+    if (path === "/anime-page/home") {
+      if (switchedUrl === verifyAlternativeRoutes(selectedIcon, animeRoutes)?.currentRoute) {
+        urlToCheck = verifyAlternativeRoutes(selectedIcon, animeRoutes)?.baseRoute;
+      }
+    } else if (path === "/manga-page/home") {
+      if (switchedUrl === verifyAlternativeRoutes(selectedIcon, mangaRoutes)?.currentRoute) {
+        urlToCheck = verifyAlternativeRoutes(selectedIcon, mangaRoutes)?.baseRoute;
+      }
+    } else if (path === "/profile") {
+      if (switchedUrl === verifyAlternativeRoutes(selectedIcon, profileRoutes)?.currentRoute) {
+        urlToCheck = verifyAlternativeRoutes(selectedIcon, profileRoutes)?.baseRoute;
+      }
+    }
+
+    if (selectedIcon === urlToCheck) {
       return { height: "2em", fill: "#fff" };
     } else {
       return { height: "1em", fill: "#8f8f8f" };
     }
   };
 
-  const redirectPage = (new_url) => {
-    window.location.href = new_url;
+  const handleIconClick = (path) => {
+    setSelectedIcon(path);
+    localStorage.removeItem("selectedIcon");
+    localStorage.setItem("selectedIcon", path);
   };
 
   return (
     <Navigation>
-      <NavigationButton onClick={() => redirectPage("/")}>
-        <HomeIcon
-          iconHeight={isSelected("/").height}
-          fillColor={isSelected("/").fill}
-        />
+      <NavigationButton onClick={() => handleIconClick("/home")}>
+        <Link to="/home">
+          <HomeIcon
+            iconHeight={isSelected("/home").height}
+            fillColor={isSelected("/home").fill}
+          />
+        </Link>
       </NavigationButton>
-      <NavigationButton onClick={() => redirectPage("/anime-home")}>
-        <DesktopIcon
-          iconHeight={isSelected("/anime-home").height}
-          fillColor={isSelected("/anime-home").fill}
-        />
+      <NavigationButton onClick={() => handleIconClick("/anime-page/home")}>
+        <Link to="/anime-page/home">
+          <DesktopIcon
+            iconHeight={isSelected("/anime-page/home").height}
+            fillColor={isSelected("/anime-page/home").fill}
+          />
+        </Link>
       </NavigationButton>
-      <NavigationButton onClick={() => redirectPage("/manga-home")}>
-        <BookIcon
-          iconHeight={isSelected("/manga-home").height}
-          fillColor={isSelected("/manga-home").fill}
-        />
+      <NavigationButton onClick={() => handleIconClick("/manga-page/home")}>
+        <Link to="/manga-page/home">
+          <BookIcon
+            iconHeight={isSelected("/manga-page/home").height}
+            fillColor={isSelected("/manga-page/home").fill}
+          />
+        </Link>
       </NavigationButton>
-      <NavigationButton onClick={() => redirectPage("/profile")}>
-        <UserIcon
-          iconHeight={isSelected("/profile").height}
-          fillColor={isSelected("/profile").fill}
-        />
+      <NavigationButton onClick={() => handleIconClick("/profile")}>
+        <Link to="/profile">
+          <UserIcon
+            iconHeight={isSelected("/profile").height}
+            fillColor={isSelected("/profile").fill}
+          />
+        </Link>
       </NavigationButton>
-      <NavigationButton onClick={() => redirectPage("/settings")}>
-        <GearIcon
-          iconHeight={isSelected("/settings").height}
-          fillColor={isSelected("/settings").fill}
-        />
+      <NavigationButton onClick={() => handleIconClick("/settings")}>
+        <Link to="/settings">
+          <GearIcon
+            iconHeight={isSelected("/settings").height}
+            fillColor={isSelected("/settings").fill}
+          />
+        </Link>
       </NavigationButton>
     </Navigation>
   );

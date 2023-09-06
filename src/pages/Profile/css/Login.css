@@ -1,0 +1,245 @@
+@import url('https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'PT Sans', sans-serif;
+}
+
+.wrapper-pai{
+    display: grid;
+    height: 100vh;
+    width: 100%;
+    place-items: center;
+    /* background: url(https://cdnb.artstation.com/p/assets/images/images/052/004/767/original/yurii-ray-06-gif-export-200.gif?1658731969); */
+    /* background: url(https://i.pinimg.com/originals/55/6a/f1/556af168f1356fcd42c51f87eed1728f.gif); */
+    /* background: url(https://wallpapercave.com/wp/wp10477648.gif); */
+    /* filter: blur(10px); */
+    background-size: cover;
+    position: relative;
+}
+
+.wrapper-pai img{
+    position: absolute;
+    height: 100vh;
+    width: 100%;
+    place-items: center;
+    /* background: url(https://i.pinimg.com/originals/55/6a/f1/556af168f1356fcd42c51f87eed1728f.gif); */
+    /* background: url(https://wallpapercave.com/wp/wp10477648.gif); */
+    filter: brightness(60%) blur(2px);
+    background-size: cover;
+}
+
+::selection{
+    background: #9925dc;
+    color: #fff;
+}
+
+.wrapper{
+    overflow: hidden;
+    max-width: 400px;
+    background: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    border: 3px solid rgba(0, 0, 0, 0.795);
+    box-shadow: 0px 15px 20px rgba(0,0,0,0.1);
+    position: absolute;
+    filter: brightness(95%);
+}
+
+.wrapper .title-text{
+    display: flex;
+    width: 200%;
+}
+
+.wrapper .title{
+    width: 50%;
+    color: #000;
+    font-size: 35px;
+    font-weight: 600;
+    text-align: center;
+    transition: all 0.6s cubic-bezier(0.68,-0.55,0.265,1.55);
+}
+
+.wrapper .slide-controls{
+    position: relative;
+    display: flex;
+    height: 50px;
+    width: 100%;
+    overflow: hidden;
+    margin: 30px 0 10px 0;
+    justify-content: space-between;
+    border: 1px solid lightgrey;
+    border-radius: 5px;
+}
+
+.slide-controls .slide{
+    height: 100%;
+    width: 100%;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 500;
+    text-align: center;
+    line-height: 48px;
+    cursor: pointer;
+    z-index: 1;
+    transition: all 0.6s ease;
+}
+
+.slide-controls label.signup{
+    font-family: 'PT Sans', sans-serif;
+    color: #000;
+}
+
+.slide-controls label.login{
+    font-family: 'PT Sans', sans-serif;
+    color: #FFF;
+}
+
+input[type="radio"]{
+    display: none;
+}
+
+#signup:checked ~ .slider-tab{
+    left: 50%;
+}
+
+#signup:checked ~ label.signup{
+    color: #fff;
+    cursor: default;
+    user-select: none;
+}
+
+#signup:checked ~ label.login{
+    color: #000;
+}
+
+#login:checked ~ label.signup{
+    color: #000;
+}
+
+#login:checked ~ label.login{
+    cursor: default;
+    user-select: none;
+}
+
+.wrapper .form-container{
+    width: 100%;
+    overflow: hidden;
+}
+
+.form-container .form-inner{
+    display: flex;
+    width: 200%;
+}
+
+.form-container .form-inner form{
+    width: 50%;
+    transition: all 0.6s cubic-bezier(0.68,-0.55,0.265,1.55);
+}
+
+.form-inner form .field{
+    height: 50px;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.form-inner form .field input{
+    font-family: 'PT Sans', sans-serif;
+    height: 100%;
+    width: 100%;
+    color: #000;
+    outline: none;
+    padding-left: 15px;
+    border-radius: 5px;
+    border: 1px solid ligthgrey;
+    border-bottom-width: 2px;
+    font-size: 17px;
+    transition: all 0.3s ease;
+}
+
+.form-inner form .field input::placeholder{
+    color: #999;
+    transition: all 0.3s ease;
+}
+
+form .field input:focus::placeholder{
+    color: #b3b3b3;
+}
+
+.form-inner form .pass-link{
+    margin-top: 5px;
+}
+
+.form-inner form .pass-link p{
+    font-family: 'PT Sans', sans-serif;
+    color: #a524ef;
+    text-decoration: none;
+    margin: 5px;
+}
+
+.form-inner form .pass-link p:hover{
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+form .btn{
+    height: 50px;
+    width: 100%;
+    border-radius: 5px;
+    position: relative;
+    margin: 20px 0 0 0;
+    overflow: hidden;
+}
+
+form .btn .btn-layer{
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    border-radius: 5px;
+    background: #7c00c4;
+    left: 0;
+    transition: 0.2s;
+}
+
+form .btn:hover .btn-layer{
+    background: #48036f;
+}
+
+form .btn button{
+    font-family: 'PT Sans', sans-serif;
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+    text-align: center;
+    position: relative;
+    background: none;
+    border: none;
+    color: #fff;
+    list-style: none;
+    user-select: none;
+    padding-left: 0;
+    border-radius: 5px;
+    font-size: 20px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.div.user-error {
+    color: #ff0000;
+    margin: 5px;
+    font-size: 16px;
+}
+
+.input.error {
+    border: 2px solid #ff0000;
+}
+
+
+@media(max-width: 392px) {
+    .wrapper {
+        width: 100%;
+        height: 100%;
+    }
+}

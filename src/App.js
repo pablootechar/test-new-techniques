@@ -4,8 +4,29 @@ import GlobalStyles from "./styles/global";
 import { NavigationBar } from "./shared/components";
 import { useState } from "react";
 import { BrowserRouter, Routes as Switch, Route } from "react-router-dom";
-import { darkCyan, darkOrange, darkPink, darkPurple } from "./styles";
-import { AnimeHome, Home, MangaHome, Profile, Settings } from "./pages";
+import {
+  darkCrimson,
+  darkCyan,
+  darkGreen,
+  darkNavyBlue,
+  darkOrange,
+  darkPink,
+  darkPurple,
+  darkRed,
+  darkSkyBlue,
+  darkYellow,
+} from "./styles";
+import {
+  AnimeHome,
+  AnimeInfo,
+  Home,
+  MangaHome,
+  Profile,
+  Settings,
+  ViewAllEpisodes,
+  WatchEpisode,
+} from "./pages";
+import Login from "./pages/Profile/Login";
 
 function App() {
   const [currentTheme, setCurrentTheme] = useState(darkCyan);
@@ -21,6 +42,18 @@ function App() {
         setCurrentTheme(darkPink);
       } else if (localStorageTheme === "darkOrange") {
         setCurrentTheme(darkOrange);
+      } else if (localStorageTheme === "darkSkyBlue") {
+        setCurrentTheme(darkSkyBlue);
+      } else if (localStorageTheme === "darkNavyBlue") {
+        setCurrentTheme(darkNavyBlue);
+      } else if (localStorageTheme === "darkYellow") {
+        setCurrentTheme(darkYellow);
+      } else if (localStorageTheme === "darkGreen") {
+        setCurrentTheme(darkGreen);
+      } else if (localStorageTheme === "darkRed") {
+        setCurrentTheme(darkRed);
+      } else if (localStorageTheme === "darkCrimson") {
+        setCurrentTheme(darkCrimson);
       } else {
         setCurrentTheme(darkCyan);
       }
@@ -40,22 +73,32 @@ function App() {
   return (
     <ThemeProvider theme={currentTheme}>
       <GlobalStyles />
-      <NavigationBar />
       <BrowserRouter>
+        <NavigationBar />
         <Switch>
           {/* <Route path="*" element={<ErrorPage />} /> */}
-          <Route path="/" element={<Home />} />
+          <Route path="/home" element={<Home />} />
           <Route
-            path="/anime-home"
+            path="/anime-page/home"
             element={<AnimeHome />}
             onLoad={prefetchAnimeHome}
           />
+          <Route path="/anime-page/:id/:name/" element={<AnimeInfo />} />
           <Route
-            path="/manga-home"
+            path="/anime-page/:id/:name/:episodeNum"
+            element={<WatchEpisode />}
+          />
+          <Route
+            path="/anime-page/all-episodes/:id/:name"
+            element={<ViewAllEpisodes />}
+          />
+          <Route
+            path="/manga-page/home"
             element={<MangaHome />}
             onLoad={prefetchMangaHome}
           />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/profile/login" element={<Login />} />
           <Route path="/settings" element={<Settings />} />
         </Switch>
       </BrowserRouter>

@@ -1,12 +1,123 @@
 import React, { useEffect, useState } from "react";
 import { ArrowArcLeft, NotePencil, Crown, Ghost } from "phosphor-react";
-// import "./css/ShowProfile.css";
 import { Link } from "react-router-dom";
 import DatabaseApi from "../../shared/DatabaseApi";
-// import notWatched from "../images/notWatched.png"
 import { AnimeOrMangaCard, Loading, StarButton } from "../../shared/components";
 import { SHA512 } from "crypto-js";
 import { styled } from "styled-components";
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  padding-bottom: 50px;
+`;
+
+const Content = styled.div`
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+`;
+
+const UserInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  position: fixed;
+  top: 5vh;
+  left: 0;
+  width: 100%;
+  position: relative;
+`;
+
+const DivUserPhoto = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-top: 40px;
+  justify-content: center;
+  align-items: center;
+
+  & > img {
+    height: 210px;
+    width: 210px;
+    border: 3px solid ${({ theme }) => theme.representativeColor};
+    padding: 2px;
+    margin-bottom: 20px;
+    border-radius: 50%;
+  }
+`;
+
+const Info = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+`;
+
+const PremiumPlan = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 80%;
+  margin-top: 20px;
+  padding: 5px;
+  border: 1px solid #2d2d2d;
+  background: url(https://gifs.eco.br/wp-content/uploads/2022/06/gifs-de-estrelas-caindo-11.gif);
+`;
+
+const PremiumText = styled.span`
+  color: #fff700;
+  font-weight: 500;
+  font-size: 18px;
+`;
+
+const FreePlan = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 80%;
+  margin-top: 20px;
+  padding: 5px;
+  border: 1px solid #2d2d2d;
+  background: url(https://i.gifer.com/SFFd.gif);
+`;
+
+const FreeText = styled.span`
+  color: #e0e0e0;
+  font-weight: 500;
+  font-size: 18px;
+`;
+
+const FavoritesDiv = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  padding-top: 5vh;
+`;
+
+const Favorites = styled.div`
+  height: 90vh;
+  overflow-y: auto;
+  height: 35vh;
+  width: 95%;
+  margin: 0vh 2.5%;
+  overflow-x: hidden;
+`;
+
+const FavoriteItem = styled.div`
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  width: 100%;
+`;
 
 export function Profile() {
   const [userInfo, setUserInfo] = useState();
@@ -27,140 +138,7 @@ export function Profile() {
     }
 
     setEssentialInfo();
-  }, []);
-
-  function replaceText(synopsis) {
-    const replacedText = synopsis?.substring(0, 180);
-
-    if (replacedText.length >= 180) {
-      return replacedText + "...";
-    }
-
-    return replacedText;
-  }
-
-  const Container = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    position: relative;
-    width: 100%;
-    overflow: hidden;
-    padding-bottom: 50px;
-  `;
-
-  const Content = styled.div`
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    align-items: center;
-    justify-content: space-around;
-    width: 100%;
-  `;
-
-  const UserInfo = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-around;
-    position: fixed;
-    top: 5vh;
-    left: 0;
-    width: 100%;
-    position: relative;
-  `;
-
-  const DivUserPhoto = styled.div`
-    display: flex;
-    flex-direction: column;
-    margin-top: 40px;
-    justify-content: center;
-    align-items: center;
-
-    & > img {
-      height: 210px;
-      width: 210px;
-      border: 3px solid ${({ theme }) => theme.representativeColor};
-      padding: 2px;
-      margin-bottom: 20px;
-      border-radius: 50%;
-    }
-  `;
-
-  const Info = styled.div`
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-  `;
-
-  const PremiumPlan = styled.div`
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    width: 80%;
-    margin-top: 20px;
-    padding: 5px;
-    border: 1px solid #2d2d2d;
-    background: url(https://gifs.eco.br/wp-content/uploads/2022/06/gifs-de-estrelas-caindo-11.gif);
-  `;
-
-  const PremiumText = styled.span`
-    color: #fff700;
-    font-weight: 500;
-    font-size: 18px;
-  `;
-
-  const FreePlan = styled.div`
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    width: 80%;
-    margin-top: 20px;
-    padding: 5px;
-    border: 1px solid #2d2d2d;
-    background: url(https://i.gifer.com/SFFd.gif);
-  `;
-
-  const FreeText = styled.span`
-    color: #e0e0e0;
-    font-weight: 500;
-    font-size: 18px;
-  `;
-
-  const FavoritesDiv = styled.div`
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    overflow-y: auto;
-    padding-top: 5vh;
-  `;
-
-  const Favorites = styled.div`
-    height: 90vh;
-    overflow-y: auto;
-    height: 35vh;
-    width: 95%;
-    margin: 0vh 2.5%;
-    overflow-x: hidden;
-  `;
-
-  const FavoriteItem = styled.div`
-    display: flex;
-    flex-direction: row;
-    position: relative;
-  `;
-
-  const FavoriteImage = styled.img`
-    height: 100px;
-    width: 70px;
-    margin-right: 10px;
-  `;
-
-  const FavoriteDescription = styled.h1`
-    width: 80%;
-    font-size: 22px;
-  `;
+  }, [favorites]);
 
   return (
     <Container>
@@ -236,7 +214,10 @@ export function Profile() {
                               databaseRequest={favorites}
                               aniId={favorite?.anime_id}
                             />
-                            <AnimeOrMangaCard imgUrl={favorite?.photo} title={favorite.name} />
+                            <AnimeOrMangaCard
+                              imgUrl={favorite?.photo}
+                              title={favorite.name}
+                            />
                           </FavoriteItem>
                         );
                       })}
@@ -261,7 +242,7 @@ export function Profile() {
             alt="cachorro bigodudokkkkj"
           />
           <h2>
-            <Link to="/login">Faça login</Link> ou sofra as{" "}
+            <Link to="/profile/login">Faça login</Link> ou sofra as{" "}
             <span style={{ color: "#ff0000", cursor: "pointer" }}>
               consequências
             </span>

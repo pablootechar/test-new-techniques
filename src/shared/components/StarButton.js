@@ -3,6 +3,20 @@ import { useEffect } from "react";
 import axios from "axios";
 import { styled } from "styled-components";
 
+const ButtonFavorite = styled.div`
+  width: 34px;
+  height: 24px;
+  background: #2d2d2d;
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+`;
+
 export const StarButton = (data) => {
   const { listInfo, databaseRequest, aniId, type } = data;
   const [isFavorited, setIsFavorited] = useState(false);
@@ -22,12 +36,11 @@ export const StarButton = (data) => {
         item.anime_id === replaceTitle(listInfo.slug || listInfo.anime_id)
     );
     setIsFavorited(isAlreadyFavorited);
-  }, []);
+  }, [databaseRequest, listInfo.anime_id, listInfo.slug]);
 
   const toggleFavorite = async () => {
     const id_anime_api_to_add = replaceTitle(listInfo.slug);
     const id_anime_api_to_remove = replaceTitle(listInfo.anime_id);
-    console.log(listInfo);
     const baseUrl = "https://animatrix-api.vercel.app/favorite";
     const urlRemoveFavorite = `${baseUrl}/${loggedUser?.id}/${id_anime_api_to_remove}`;
 
@@ -50,20 +63,6 @@ export const StarButton = (data) => {
       setIsFavorited(true);
     }
   };
-
-  const ButtonFavorite = styled.div`
-    width: 34px;
-    height: 24px;
-    background: #2d2d2d;
-    position: absolute;
-    right: 5px;
-    top: 5px;
-    border-radius: 5px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-  `;
 
   const starIconClass = useMemo(() => {
     return isFavorited ? "fa-solid fa-star" : "fa-regular fa-star";
