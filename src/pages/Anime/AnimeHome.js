@@ -81,8 +81,8 @@ export const AnimeHome = () => {
   const [rows, setRows] = useState([]);
   const [featured, setFeatured] = useState();
   const [favorites, setFavorites] = useState();
-  const loggedUser =
-    JSON.parse(localStorage.getItem("@animatrix/profile")) || undefined;
+  let loggedUser = localStorage.getItem("@animatrix/profile");
+  loggedUser = JSON.parse(loggedUser) || undefined;
   const memoFeatured = useMemo(() => featured, [featured]);
 
   const fetchData = useCallback(async () => {

@@ -88,7 +88,7 @@ const NavigationButton = styled.button`
 `;
 
 export const NavigationBar = () => {
-  const localPathOfIcon = localStorage.getItem("selectedIcon")
+  const localPathOfIcon = localStorage.getItem("@animatrix/current-page")
   const [selectedIcon, setSelectedIcon] = useState(localPathOfIcon);
   const { id, name, episodeNum } = useParams();
 
@@ -112,7 +112,7 @@ export const NavigationBar = () => {
   ];
 
   useEffect(() => {
-    const storedIcon = localStorage.getItem("selectedIcon");
+    const storedIcon = localStorage.getItem("@animatrix/current-page");
     if (storedIcon) {
       setSelectedIcon(storedIcon);
     } else {
@@ -162,8 +162,8 @@ export const NavigationBar = () => {
 
   const handleIconClick = (path) => {
     setSelectedIcon(path);
-    localStorage.removeItem("selectedIcon");
-    localStorage.setItem("selectedIcon", path);
+    localStorage.removeItem("@animatrix/current-page");
+    localStorage.setItem("@animatrix/current-page", path);
   };
 
   return (

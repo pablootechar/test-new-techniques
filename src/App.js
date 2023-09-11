@@ -1,7 +1,7 @@
 import React from "react";
 import { ThemeProvider } from "styled-components";
 import GlobalStyles from "./styles/global";
-import { NavigationBar } from "./shared/components";
+import { NavigationBar, Search } from "./shared/components";
 import { useState } from "react";
 import { BrowserRouter, Routes as Switch, Route } from "react-router-dom";
 import {
@@ -22,6 +22,7 @@ import {
   Home,
   MangaHome,
   Profile,
+  SearchPage,
   Settings,
   ViewAllEpisodes,
   WatchEpisode,
@@ -30,7 +31,7 @@ import Login from "./pages/Profile/Login";
 
 function App() {
   const [currentTheme, setCurrentTheme] = useState(darkCyan);
-  const localStorageTheme = localStorage.getItem("currentTheme");
+  const localStorageTheme = localStorage.getItem("@animatrix/theme");
 
   useState(() => {
     if (localStorageTheme) {
@@ -75,9 +76,11 @@ function App() {
       <GlobalStyles />
       <BrowserRouter>
         <NavigationBar />
+        <Search />
         <Switch>
           {/* <Route path="*" element={<ErrorPage />} /> */}
           <Route path="/home" element={<Home />} />
+          <Route path="/search" element={<SearchPage />} />
           <Route
             path="/anime-page/home"
             element={<AnimeHome />}

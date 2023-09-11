@@ -64,7 +64,7 @@ export const ThemeSelector = () => {
   ];
 
   const setNewTheme = (themeTitle) => {
-    localStorage.setItem("currentTheme", themeTitle);
+    localStorage.setItem("@animatrix/theme", themeTitle);
     window.location.reload();
   };
 
