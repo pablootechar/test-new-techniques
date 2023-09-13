@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { ArrowArcLeft, NotePencil, Crown, Ghost } from "phosphor-react";
+import { Crown, Ghost } from "phosphor-react";
 import { Link } from "react-router-dom";
 import DatabaseApi from "../../shared/DatabaseApi";
 import { AnimeOrMangaCard, Loading, StarButton } from "../../shared/components";
 import { SHA512 } from "crypto-js";
 import { styled } from "styled-components";
+import { shade } from "polished";
 
 const Container = styled.div`
   display: flex;
@@ -32,7 +33,6 @@ const UserInfo = styled.div`
   align-items: center;
   justify-content: space-around;
   position: fixed;
-  top: 5vh;
   left: 0;
   width: 100%;
   position: relative;
@@ -44,6 +44,7 @@ const DivUserPhoto = styled.div`
   margin-top: 40px;
   justify-content: center;
   align-items: center;
+  position: relative;
 
   & > img {
     height: 210px;
@@ -58,7 +59,30 @@ const DivUserPhoto = styled.div`
 const Info = styled.div`
   display: flex;
   flex-direction: row;
+  align-items: center;
   width: 100%;
+  margin-top: 5px;
+
+  & > span {
+    width: 100%;
+    padding-bottom: 5px;
+  }
+
+  & > input {
+    background: none;
+    border: none;
+    outline: none;
+    font-size: 18px;
+    color: #f5f5f5;
+    width: 100%;
+  }
+`;
+
+const InfoTitleLine = styled.h5`
+  font-weight: 300;
+  margin-right: 10px;
+  font-size: 18px;
+  color: #8c8c8c;
 `;
 
 const PremiumPlan = styled.div`
@@ -119,12 +143,28 @@ const FavoriteItem = styled.div`
   width: 100%;
 `;
 
+const EditButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 25px;
+  right: 10px;
+  padding: 4px;
+  background: #000;
+  border: 2px solid ${({ theme }) => shade(0.2, theme.representativeColor)};
+  border-radius: 8px;
+  color: #f5f5f5;
+  font-size: 20px;
+`;
+
 export function Profile() {
   const [userInfo, setUserInfo] = useState();
   const [userPhoto, setUserPhoto] = useState();
   const [favorites, setFavorites] = useState();
   const loggedUser =
     JSON.parse(localStorage.getItem("@animatrix/profile")) || undefined;
+  let i = 0;
 
   useEffect(() => {
     async function setEssentialInfo() {
@@ -140,6 +180,10 @@ export function Profile() {
     setEssentialInfo();
   }, [favorites]);
 
+  const aleatoryNumberGenerator = (max, min) => {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  };
+
   return (
     <Container>
       {typeof loggedUser !== "undefined" ? (
@@ -147,32 +191,25 @@ export function Profile() {
           {typeof userInfo !== "undefined" ? (
             <Content>
               <UserInfo>
-                <ArrowArcLeft
-                  style={{ position: "absolute", top: "0px", left: "30px" }}
-                  size={32}
-                  color="#fff"
-                />
-                <Link to="edit">
-                  <NotePencil
-                    style={{ position: "absolute", top: "0px", right: "30px" }}
-                    size={32}
-                    color="#fff"
-                  />
-                </Link>
                 <DivUserPhoto>
+                  <Link to="edit">
+                    <EditButton>
+                      <i className="fa-solid fa-pen"></i>
+                    </EditButton>
+                  </Link>
                   <img src={userPhoto} alt="" />
                 </DivUserPhoto>
                 <div>
                   <Info>
-                    <span>Name:</span>
+                    <InfoTitleLine>Name:</InfoTitleLine>
                     <span>{userInfo.name}</span>
                   </Info>
                   <Info>
-                    <span>E-mail:</span>
+                    <InfoTitleLine>Email:</InfoTitleLine>
                     <span>{loggedUser?.email}</span>
                   </Info>
                   <Info>
-                    <span>Password:</span>
+                    <InfoTitleLine>Password:</InfoTitleLine>
                     <input
                       value={loggedUser?.password}
                       type="password"
@@ -203,12 +240,13 @@ export function Profile() {
               <FavoritesDiv>
                 <h3>Favorites</h3>
                 <Favorites>
-                  <br />
                   {typeof userInfo !== "undefined" ? (
                     <Favorites>
                       {favorites.map((favorite) => {
+                        i++;
+
                         return (
-                          <FavoriteItem>
+                          <FavoriteItem key={`${favorite?.anime_id}_${aleatoryNumberGenerator(i, i * 100)}`}>
                             <StarButton
                               listInfo={favorite}
                               databaseRequest={favorites}

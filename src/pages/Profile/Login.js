@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import axios from "axios";
 import "./css/Login.css";
 import { SHA512 } from "crypto-js";
@@ -72,6 +72,7 @@ const FormButton = styled.button`
 export default function Login() {
   const [values, setValues] = useState();
   const [userErrorInfos, setUserErrorInfos] = useState(false);
+  const loginPasswordInputRef = useRef();
 
   const cancelRefresh = (e) => {
     e.preventDefault();
@@ -82,6 +83,7 @@ export default function Login() {
     const loginForm = document.querySelector("form.login");
     loginForm.style.marginLeft = "-50%";
   }
+
   function loginBtn() {
     alterar_url("/profile/login");
     const loginForm = document.querySelector("form.login");
@@ -95,6 +97,13 @@ export default function Login() {
     inputEmail.style.border = "2px solid #ff0000";
     inputPass.style.border = "2px solid #ff0000";
   }
+
+  const EnterKeyPress = (key, event) => {
+    if (key === "Enter") {
+
+      return loginClick();
+    }
+  };
 
   function checkUser(data) {
     const email = SHA512(data?.email).toString();
@@ -112,8 +121,10 @@ export default function Login() {
                   id: info?.id,
                   email: data?.email,
                   password: data?.senha,
+                  premium: info?.isPremium === 1 ? true : false
                 })
               );
+              localStorage.setItem("@animatrix/current-page", "/home");
               window.location.href = "/home";
             } else {
               setErrorInfos(true);
@@ -174,6 +185,10 @@ export default function Login() {
 
   return (
     <div className="wrapper-pai">
+      <img
+        src="https://cdnb.artstation.com/p/assets/images/images/052/004/767/original/yurii-ray-06-gif-export-200.gif?1658731969"
+        alt=""
+      />
       <div className="wrapper">
         <div className="form-container">
           <div className="slide-controls">
@@ -209,7 +224,6 @@ export default function Login() {
                   name="email"
                   id="login-input-email"
                   onChange={handelChangeLogin}
-                  required
                 />
               </div>
               <div className="field">
@@ -220,7 +234,10 @@ export default function Login() {
                   name="senha"
                   id="login-input-pass"
                   onChange={handelChangeLogin}
-                  required
+                  ref={loginPasswordInputRef}
+                  onKeyDown={(e) => {
+                    EnterKeyPress(e.key, "execute login");
+                  }}
                 />
               </div>
               {userErrorInfos === true && (

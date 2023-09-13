@@ -24,6 +24,7 @@ const SearchButton = styled.div`
   font-size: 18px;
   background: ${({ theme }) => theme.colors.themeTextColor};
   margin-left: 5px;
+  box-shadow: 0px 0px 15px ${({ theme }) => theme.colors.themeTextColor};
 `;
 
 const InputSearch = styled.input`
@@ -35,6 +36,7 @@ const InputSearch = styled.input`
   outline: none;
   color: #f5f5f5;
   width: 90%;
+  box-shadow: 0px 0px 15px ${({ theme }) => theme.colors.themeTextColor};
 `;
 
 export const Search = () => {
@@ -73,6 +75,12 @@ export const Search = () => {
     }
   };
 
+  const EnterKeyPress = (key) => {
+    if (key === "Enter") {
+      buttonSearchClick();
+    }
+  }
+
   return (
     <SearchDiv>
       {showSearchInput && (
@@ -81,16 +89,17 @@ export const Search = () => {
           ref={inputRef}
           onClick={inputClick}
           onChange={handleInput}
+          onKeyDown={(e) => EnterKeyPress(e.key)}
         />
       )}
       <SearchButton>
         {showSearchButton ? (
           <div onClick={buttonSearchClick}>
-            <i class="fa-solid fa-magnifying-glass"></i>
+            <i className="fa-solid fa-magnifying-glass"></i>
           </div>
         ) : (
           <div onClick={buttonCloseClick}>
-            <i class="fa-solid fa-xmark"></i>
+            <i className="fa-solid fa-xmark"></i>
           </div>
         )}
       </SearchButton>

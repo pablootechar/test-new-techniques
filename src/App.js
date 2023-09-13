@@ -28,6 +28,7 @@ import {
   WatchEpisode,
 } from "./pages";
 import Login from "./pages/Profile/Login";
+import { RedirectToHomePage } from "./Redirect";
 
 function App() {
   const [currentTheme, setCurrentTheme] = useState(darkCyan);
@@ -79,6 +80,7 @@ function App() {
         <Search />
         <Switch>
           {/* <Route path="*" element={<ErrorPage />} /> */}
+          <Route path="/" element={<RedirectToHomePage /> } />
           <Route path="/home" element={<Home />} />
           <Route path="/search" element={<SearchPage />} />
           <Route

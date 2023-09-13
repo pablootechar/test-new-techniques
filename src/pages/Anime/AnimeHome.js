@@ -77,6 +77,8 @@ const Vignette = styled.div`
   background: linear-gradient(to top, #000, transparent);
 `;
 
+const AnimeList = styled.div``;
+
 export const AnimeHome = () => {
   const [rows, setRows] = useState([]);
   const [featured, setFeatured] = useState();
@@ -150,8 +152,7 @@ export const AnimeHome = () => {
   }
 
   return (
-    <>
-      {typeof favorites !== "undefined" ? (
+      typeof favorites !== "undefined" ? (
         <Container>
           <Featured>
             <BackgroundImage
@@ -169,7 +170,7 @@ export const AnimeHome = () => {
             <Vignette />
           </Featured>
 
-          <div>
+          <AnimeList>
             <ul>
               {rows.map((row, key) => (
                 <li key={key}>
@@ -182,11 +183,10 @@ export const AnimeHome = () => {
                 </li>
               ))}
             </ul>
-          </div>
+          </AnimeList>
         </Container>
       ) : (
         <Loading />
-      )}
-    </>
+      )
   );
 };

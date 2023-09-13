@@ -81,6 +81,7 @@ export const AnimeInfo = () => {
   const [animeInfo, setAnimeInfo] = useState();
   const { id, name } = useParams();
   const [showFullSynopsis, setShowFUllSynopsis] = useState(true);
+  let i = 0;
 
   useEffect(() => {
     async function request() {
@@ -100,7 +101,11 @@ export const AnimeInfo = () => {
   function replaceText(synopsis) {
     const replacedText = synopsis?.substring(0, 300);
     return replacedText?.length >= 300 ? replacedText + "..." : replacedText;
-  }
+  };
+
+  const aleatoryNumberGenerator = (max, min) => {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  };
 
   return (
     <>
@@ -113,7 +118,9 @@ export const AnimeInfo = () => {
             />
             <AnimeDescription>
               <AnimeTitle>{animeInfo?.attributes?.canonicalTitle}</AnimeTitle>
-              {showFullSynopsis ? (
+              {animeInfo?.attributes?.synopsis.length < 300 ? (
+                <Synopsis>{animeInfo?.attributes?.synopsis}</Synopsis>
+              ) : showFullSynopsis ? (
                 <Synopsis>
                   {replaceText(animeInfo?.attributes?.synopsis)}
                   <ButtonShowMore
@@ -144,12 +151,15 @@ export const AnimeInfo = () => {
                   </span>
                 );
               };
-
               const urlToRedirect = `/anime-page/${id}/${name}/${ep.attributes.number}`;
+              i++;
               return (
-                <Link to={urlToRedirect} key={ep.attributes.thumbnail.original}>
+                <Link
+                  to={urlToRedirect}
+                  key={`${ep.attributes?.thumbnail?.original}_${aleatoryNumberGenerator(i, i * 100)}`}
+                >
                   <AnimeOrMangaCard
-                    imgUrl={ep.attributes.thumbnail.original}
+                    imgUrl={ep.attributes?.thumbnail?.original}
                     title={""}
                     description={descriptionAnime()}
                   />
@@ -162,11 +172,8 @@ export const AnimeInfo = () => {
           </EpisodeList>
         </Container>
       ) : (
-        // </div>
         <Loading />
       )}
     </>
   );
 };
-
-//

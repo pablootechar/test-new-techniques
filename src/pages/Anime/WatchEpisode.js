@@ -13,14 +13,14 @@ export const WatchEpisode = () => {
   const [allComments, setAllComments] = useState();
   const [episodeInfos, setEpisodeInfos] = useState();
   const [stateReload, setReloadState] = useState();
-  const isPremium = localStorage.getItem("@animatrix/user-premium");
+  const userInfos = localStorage.getItem("@animatrix/profile");
+  const { premium } = JSON.parse(userInfos);
 
 
   useEffect(() => {
     async function fetch() {
       const episode = `${name}-episode-${episodeNum}`;
       const episodeLinks = await Api.getStreamingUrl(episode);
-      // const animeInfo = await Api.getEpisodes(id);
 
       if (episodeLinks !== "") {
         episodeLinks.sources?.map((links) => {
@@ -76,7 +76,7 @@ export const WatchEpisode = () => {
         <div className="container-watch responsive">
           <div className="currentEpisode">
             <div className="details-watch">
-              {isPremium === "true" ? (
+              {premium === true ? (
                 <ReactPlayer width="100%" height="40%" url={url} controls />
                 ) : (
                 <CustomVideoPlayer width="100%" height="60%" adVideo="https://youtu.be/INIloHNP8_Q?si=5XNFZ-Pt1flYgnQG" principalVideo={url} controls />

@@ -1,6 +1,8 @@
+import { SHA512 } from "crypto-js";
 import { Check } from "phosphor-react";
 import { shade } from "polished";
 import { styled } from "styled-components";
+import DatabaseApi from "../../../shared/DatabaseApi";
 
 const ListOfBenefits = styled.div`
   position: relative;
@@ -164,7 +166,7 @@ const ListButton = styled.button`
   }
 `;
 
-const ItemPrice = styled.label`
+const ItemPrice = styled.span`
   color: rgba(247, 244, 244, 0.37);
   text-align: center;
   width: 100%;
@@ -199,17 +201,17 @@ export const ShopItemPremium = () => {
             <i>Subscribe for $5/month</i>
           </ItemPrice>
           <ListButton
-          // onClick={async () => {
-          //     let userId = localStorage.getItem("@animatrix/profile") !== null ? JSON.parse(localStorage.getItem("@animatrix/profile")) : "deslogado bro";
+          onClick={async () => {
+              let userId = localStorage.getItem("@animatrix/profile") !== null ? JSON.parse(localStorage.getItem("@animatrix/profile")) : "deslogado bro";
 
-          //     if (userId === "deslogado bro") {
-          //         alert("crie ou logue em uma conta primeiro");
-          //         return;
-          //     }
-          //     const email = SHA512(userId?.email).toString();
-          //     const { id, name } = await DatabaseApi.isLogged(email);
-          //     window.location.href = `https://api.whatsapp.com/send?phone=5514996745539&text=Hi,%20all%20right?%20I'm%20${name} (${id})%20and%20would%20like%20to%20subscribe%20to%20the%20site's%20premium%20plan.%20How%20do%20I%20do%20it?`
-          // }}
+              if (userId === "deslogado bro") {
+                  alert("crie ou logue em uma conta primeiro");
+                  return;
+              }
+              const email = SHA512(userId?.email).toString();
+              const { id, name } = await DatabaseApi.isLogged(email);
+              window.location.href = `https://api.whatsapp.com/send?phone=5514996745539&text=Hi,%20all%20right?%20I'm%20${name} (${id})%20and%20would%20like%20to%20subscribe%20to%20the%20site's%20premium%20plan.%20How%20do%20I%20do%20it?`
+          }}
           >
             Buy
           </ListButton>

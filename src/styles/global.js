@@ -12,9 +12,9 @@ export default createGlobalStyle`
     }
 
     body{
-        background: ${(props) => props.theme.colors.background};
+        background: ${({ theme }) => theme.colors.background};
         font-size: 16px;
-        color: ${(props) => props.theme.colors.textColor};
+        color: ${({ theme }) => theme.colors.textColor};
         height: 100vh;
         width: 100%;
         padding-bottom: 50px;
@@ -26,8 +26,12 @@ export default createGlobalStyle`
     }
 
     body::-webkit-scrollbar-thumb {
-        background-color: ${(props) =>
-          shade(0.2, props.theme.colors.textColor)};
+        background-color: ${({ theme }) => shade(0.2, theme.colors.textColor)};
         border-radius: 20px;
     }
+
+    ::selection{
+    background: ${({ theme }) => theme.representativeColor};
+    color: #f5f5f5;
+}
 `;

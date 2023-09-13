@@ -21,19 +21,13 @@
 }
 
 .wrapper-pai img{
-    position: absolute;
-    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
     width: 100%;
-    place-items: center;
-    /* background: url(https://i.pinimg.com/originals/55/6a/f1/556af168f1356fcd42c51f87eed1728f.gif); */
-    /* background: url(https://wallpapercave.com/wp/wp10477648.gif); */
+    object-fit: cover; /* Mantém a proporção e corta a imagem se necessário */
     filter: brightness(60%) blur(2px);
-    background-size: cover;
-}
-
-::selection{
-    background: #9925dc;
-    color: #fff;
 }
 
 .wrapper{
@@ -153,7 +147,6 @@ input[type="radio"]{
     outline: none;
     padding-left: 15px;
     border-radius: 5px;
-    border: 1px solid ligthgrey;
     border-bottom-width: 2px;
     font-size: 17px;
     transition: all 0.3s ease;
