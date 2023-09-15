@@ -1,0 +1,27 @@
+/* Seu arquivo CSS */
+
+/* Estilize a barra de progresso */
+.react-player-progress-bar {
+    background-color: #ff0000; /* Substitua pela cor desejada */
+    height: 5px; /* Altura da barra de progresso */
+  }
+  
+  /* Estilize a barra de carregamento */
+  .react-player__preview {
+    background-color: #ccc; /* Cor de carregamento desejada */
+  }
+  
+  /* Estilize o cursor de progresso */
+  .react-player__preview-bar {
+    background-color: #ff0000; /* Cor do cursor de progresso desejada */
+    width: 3px; /* Largura do cursor de progresso */
+  }
+  
+  /* Estilize o cursor de arrasto */
+  .react-player__preview-icon {
+    background-color: #ff0000; /* Cor do cursor de arrasto desejada */
+    width: 10px; /* Largura do cursor de arrasto */
+    height: 10px; /* Altura do cursor de arrasto */
+    border-radius: 50%; /* Transforme em um círculo ou ajuste conforme necessário */
+  }
+  

@@ -156,7 +156,7 @@ export const AnimeInfo = () => {
               return (
                 <Link
                   to={urlToRedirect}
-                  key={`${ep.attributes?.thumbnail?.original}_${aleatoryNumberGenerator(i, i * 100)}`}
+                  key={`${name}_episode${i}_${aleatoryNumberGenerator(i, i * 100)}`}
                 >
                   <AnimeOrMangaCard
                     imgUrl={ep.attributes?.thumbnail?.original}

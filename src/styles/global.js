@@ -31,7 +31,8 @@ export default createGlobalStyle`
     }
 
     ::selection{
-    background: ${({ theme }) => theme.representativeColor};
-    color: #f5f5f5;
-}
+        background: ${({ theme }) => theme.representativeColor};
+        color: #f5f5f5;
+    }
+
 `;

@@ -80,6 +80,7 @@ const replaceTitle = (animeName) => {
 export const Slider = React.memo(
   ({ title, animes = undefined, redirectTo = "", databaseRequest }) => {
     const redirectPage = (animeId, animeName) => {
+      console.log(animes)
       window.location.href = `/${redirectTo}-page/${animeId}/${animeName}/`;
     };
 
