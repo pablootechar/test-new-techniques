@@ -6,7 +6,7 @@ import Api from "../../shared/Api";
 import DatabaseApi from "../../shared/DatabaseApi";
 import CustomVideoPlayer from "./components/CustomVideoPlayer";
 import styled from "styled-components";
-import "./test.css"
+import "./test.css";
 
 const Container = styled.div`
   height: 100vh;
@@ -65,13 +65,14 @@ export const WatchEpisode = () => {
 
   async function getUserInfo() {
     if (typeof userInfos !== "undefined") {
-      const userInfo = await DatabaseApi.getAllUserInfo(JSON.parse(userInfos)?.id);
-  
+      const userInfo = await DatabaseApi.getAllUserInfo(
+        JSON.parse(userInfos)?.id
+      );
+
       setUserIsPremium(userInfo?.isPremium === 1 ? true : false);
     } else {
       setUserIsPremium(false);
     }
-
   }
 
   useEffect(() => {
@@ -105,7 +106,26 @@ export const WatchEpisode = () => {
       return setAllComments(await DatabaseApi.getComments(animeId, episodeNum));
     }
 
+    const handleOrientationChange = () => {
+      const isLandscape =
+        window.innerWidth > window.innerHeight && !document.fullscreenElement;
+      console.log(isLandscape);
+
+      if (isLandscape) {
+        // Se o dispositivo está em orientação paisagem, ative o modo tela cheia
+        playerRef.current?.player?.requestFullscreen();
+      }
+    };
+
+    // Adicionar um ouvinte para o evento de mudança de orientação
+    window.addEventListener("orientationchange", handleOrientationChange);
+
     getAllCommentsToTheEpisode();
+
+    return () => {
+      // Limpar o ouvinte quando o componente for desmontado
+      window.removeEventListener("orientationchange", handleOrientationChange);
+    };
   }, [stateReload]);
 
   const redirectToAllEpisodes = () => {
@@ -131,16 +151,21 @@ export const WatchEpisode = () => {
     return replacedText?.length >= 300 ? replacedText + "..." : replacedText;
   }
 
-
   return typeof url !== "undefined" ? (
     <Container>
       {userIsPremium === true ? (
-        <ReactPlayer width="100%" height="40%" url={url} controls ref={playerRef} />
+        <ReactPlayer
+          ref={playerRef}
+          width="100%"
+          height="40%"
+          url={url}
+          controls
+        />
       ) : (
         <CustomVideoPlayer
           width="100%"
           height="60%"
-          adVideo="https://youtu.be/INIloHNP8_Q?si=5XNFZ-Pt1flYgnQG"
+          adVideo="https://www.youtube.com/embed/INIloHNP8_Q?si=xmgdnKn2x9XMY6f9"
           principalVideo={url}
           playing
         />
@@ -179,7 +204,7 @@ export const WatchEpisode = () => {
       </DetailsWatch>
       <h1>All comments</h1>
       <AllCommentsDiv>
-      <SendComment onCommentSent={handleSubmit} />
+        <SendComment onCommentSent={handleSubmit} />
         {typeof allComments !== "undefined" ? (
           allComments.map((comment) => {
             return (
@@ -191,7 +216,6 @@ export const WatchEpisode = () => {
         ) : (
           <Loading />
         )}
-        
       </AllCommentsDiv>
     </Container>
   ) : (

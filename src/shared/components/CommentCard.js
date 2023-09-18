@@ -151,9 +151,9 @@ export const CommentCard = (data) => {
 
   const checkTypeUser = (user_info) => {
 
-    if (user_info.isAdmin === 1) {
+    if (user_info?.isAdmin === 1) {
       return "borda-com-mulecagi"
-    } else if (user_info.isPremium === 1) {
+    } else if (user_info?.isPremium === 1) {
       return "borda-comum"
     } else {
       return "borda-de-pobre"
@@ -162,7 +162,7 @@ export const CommentCard = (data) => {
 
   const checkTypePhoto = (user_info) => {
 
-    if (user_info.isPremium === 1) {
+    if (user_info?.isPremium === 1) {
       return "borda-comum"
     } else {
       return "borda-de-pobre"

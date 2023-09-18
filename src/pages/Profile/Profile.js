@@ -2,10 +2,16 @@ import React, { useEffect, useState } from "react";
 import { Crown, Ghost } from "phosphor-react";
 import { Link } from "react-router-dom";
 import DatabaseApi from "../../shared/DatabaseApi";
-import { AnimeOrMangaCard, Loading, StarButton } from "../../shared/components";
+import {
+  AnimeOrMangaCard,
+  Loading,
+  MessageModal,
+  StarButton,
+} from "../../shared/components";
 import { SHA512 } from "crypto-js";
 import { styled } from "styled-components";
 import { shade } from "polished";
+import { ModalPhoto } from "./components/PhotoModal";
 
 const Container = styled.div`
   display: flex;
@@ -162,8 +168,13 @@ export function Profile() {
   const [userInfo, setUserInfo] = useState();
   const [userPhoto, setUserPhoto] = useState();
   const [favorites, setFavorites] = useState();
+  const [showModal, setShowModal] = useState(false);
+  const [showReturnUpdatePhoto, setShowReturnUpdatePhoto] = useState(false);
   const loggedUser =
     JSON.parse(localStorage.getItem("@animatrix/profile")) || undefined;
+  const updatedPhoto =
+    localStorage.getItem("@animatrix/recent-update-photo") || undefined;
+
   let i = 0;
 
   useEffect(() => {
@@ -177,6 +188,10 @@ export function Profile() {
       setFavorites(favoritesUser);
     }
 
+    if (updatedPhoto) {
+      setShowReturnUpdatePhoto(!showReturnUpdatePhoto);
+    }
+
     setEssentialInfo();
   }, [favorites]);
 
@@ -186,18 +201,37 @@ export function Profile() {
 
   return (
     <Container>
+      {showModal && (
+        // <MessageModal
+        //   typeMessage="error"
+        //   textMessage="your profile photo has been changed successfully"
+        //   modalState={showModal}
+        //   handleStateOfModal={setShowModal} />
+        <ModalPhoto isOpen={showModal} setOpen={setShowModal} />
+      )}
+
+      {showReturnUpdatePhoto && (
+        <MessageModal
+          typeMessage="success"
+          textMessage="your profile photo has been changed successfully"
+          modalState={showReturnUpdatePhoto}
+          handleStateOfModal={setShowReturnUpdatePhoto} />
+      )}
+
       {typeof loggedUser !== "undefined" ? (
         <>
           {typeof userInfo !== "undefined" ? (
             <Content>
               <UserInfo>
                 <DivUserPhoto>
-                  <Link to="edit">
-                    <EditButton>
-                      <i className="fa-solid fa-pen"></i>
-                    </EditButton>
-                  </Link>
-                  <img src={userPhoto} alt="" />
+                  <EditButton onClick={() => setShowModal(!showModal)}>
+                    <i className="fa-solid fa-pen"></i>
+                  </EditButton>
+                  <img
+                    src={userPhoto}
+                    alt=""
+                    onClick={() => setShowModal(!showModal)}
+                  />
                 </DivUserPhoto>
                 <div>
                   <Info>
@@ -246,7 +280,11 @@ export function Profile() {
                         i++;
 
                         return (
-                          <FavoriteItem key={`${favorite?.anime_id}_${aleatoryNumberGenerator(i, i * 100)}`}>
+                          <FavoriteItem
+                            key={`${
+                              favorite?.anime_id
+                            }_${aleatoryNumberGenerator(i, i * 100)}`}
+                          >
                             <StarButton
                               listInfo={favorite}
                               databaseRequest={favorites}
