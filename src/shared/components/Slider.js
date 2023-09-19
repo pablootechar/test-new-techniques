@@ -78,10 +78,18 @@ const replaceTitle = (animeName) => {
 };
 
 export const Slider = React.memo(
-  ({ title, animes = undefined, redirectTo = "", databaseRequest }) => {
+  ({ title, animes = undefined, redirectTo = "", databaseRequest, showModal, setShowModal }) => {
+
+
+    const convertToSlug = (text) => {
+      return text
+        .toLowerCase() 
+        .replace(/\s+/g, "-")
+        .replace(/[\(\)]/g, "");
+    };
+
     const redirectPage = (animeId, animeName) => {
-      console.log(animes)
-      window.location.href = `/${redirectTo}-page/${animeId}/${animeName}/`;
+      window.location.href = `/${redirectTo}-page/${animeId}/${convertToSlug(animeName)}/`;
     };
 
     return (
@@ -93,8 +101,8 @@ export const Slider = React.memo(
               responsive={responsive}
               infinite={true}
               containerClass="carrossel-container"
-              removeArrowOnDeviceType={["mobile", "smallMobile"]} // Desaparecer setas para tablets e mobile
-              centerMode={true} // Mostra os próximos itens e os itens anteriores parcialmente.
+              removeArrowOnDeviceType={["mobile", "smallMobile"]}
+              centerMode={true}
               className="Slider"
             >
               {animes.map((infoCard) => {
@@ -105,10 +113,12 @@ export const Slider = React.memo(
                       databaseRequest={databaseRequest}
                       aniId={replaceTitle(infoCard?.attributes?.slug)}
                       type={redirectTo}
+                      showModal={showModal}
+                      setShowModal={setShowModal}
                     />
                     <ItemInfo
                       onClick={() => {
-                        redirectPage(infoCard.id, infoCard.attributes.slug);
+                        redirectPage(infoCard.id, infoCard.attributes?.titles?.en_jp);
                       }}
                     >
                       <IncorporateAnImage>

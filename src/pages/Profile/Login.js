@@ -67,6 +67,7 @@ const FormButton = styled.button`
   transition: 0.2s;
   font-size: 22px;
   color: #f5f5f5;
+  border: none;
 `;
 
 export default function Login() {
@@ -79,13 +80,13 @@ export default function Login() {
   };
 
   function signupBtn() {
-    alterar_url("/profile/register");
+    handleUrl("/profile/register");
     const loginForm = document.querySelector("form.login");
     loginForm.style.marginLeft = "-50%";
   }
 
   function loginBtn() {
-    alterar_url("/profile/login");
+    handleUrl("/profile/login");
     const loginForm = document.querySelector("form.login");
     loginForm.style.marginLeft = "0%";
   }
@@ -179,7 +180,7 @@ export default function Login() {
       });
   };
 
-  function alterar_url(nova) {
+  function handleUrl(nova) {
     window.history.pushState({}, null, nova);
   }
 

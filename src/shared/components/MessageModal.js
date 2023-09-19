@@ -23,11 +23,12 @@ const MessageBox = styled.div`
   position: absolute;
   bottom: 10%;
   border-radius: 8px;
-  z-index: 11;
+  z-index: 100;
 `;
 
 const BoxText = styled.h3`
   color: #fff;
+  text-align: center;
 `;
 
 const XIcon = styled.i`
@@ -44,15 +45,10 @@ export const MessageModal = ({
   handleStateOfModal,
 }) => {
 
-    const updatedPhoto =
-    localStorage.getItem("@animatrix/recent-update-photo") || undefined;
-
-    const closeModal = () => {
-        if (updatedPhoto) {
-            localStorage.removeItem("@animatrix/recent-update-photo");
-        }
-        handleStateOfModal(!modalState);
-    }
+  const closeModal = () => {
+    localStorage.removeItem("@animatrix/recent-update-photo");
+    handleStateOfModal(!modalState);
+  };
 
   return (
     <Container>

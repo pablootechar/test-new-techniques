@@ -52,8 +52,8 @@ const XIcon = styled.i`
 const ListOfPhotos = styled.div``;
 
 const ListOfCategoryTitle = styled.h3`
-    font-size: 25px;
-    margin: 10px 0;
+  font-size: 25px;
+  margin: 10px 0;
 `;
 
 const ListOfCategory = styled.ul`
@@ -75,8 +75,8 @@ const LoadPhotos = ({ info, setValueToIsOpen }) => {
 
   const setNewPhoto = async (photo_id) => {
     await DatabaseApi.setNewUserPhoto(loggedUser?.id, photo_id);
-    // localStorage.setItem("@animatrix/recent-update-photo", true)
     window.location.reload();
+    localStorage.setItem("@animatrix/recent-update-photo", true);
     setValueToIsOpen(false);
   };
 

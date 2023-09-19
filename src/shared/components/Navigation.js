@@ -164,49 +164,40 @@ export const NavigationBar = () => {
     setSelectedIcon(path);
     localStorage.removeItem("@animatrix/current-page");
     localStorage.setItem("@animatrix/current-page", path);
+    window.location.href = path;
   };
 
   return (
     <Navigation>
       <NavigationButton onClick={() => handleIconClick("/home")}>
-        <Link to="/home">
           <HomeIcon
             iconHeight={isSelected("/home").height}
             fillColor={isSelected("/home").fill}
           />
-        </Link>
       </NavigationButton>
       <NavigationButton onClick={() => handleIconClick("/anime-page/home")}>
-        <Link to="/anime-page/home">
           <DesktopIcon
             iconHeight={isSelected("/anime-page/home").height}
             fillColor={isSelected("/anime-page/home").fill}
           />
-        </Link>
       </NavigationButton>
       <NavigationButton onClick={() => handleIconClick("/manga-page/home")}>
-        <Link to="/manga-page/home">
           <BookIcon
             iconHeight={isSelected("/manga-page/home").height}
             fillColor={isSelected("/manga-page/home").fill}
           />
-        </Link>
       </NavigationButton>
       <NavigationButton onClick={() => handleIconClick("/profile")}>
-        <Link to="/profile">
           <UserIcon
             iconHeight={isSelected("/profile").height}
             fillColor={isSelected("/profile").fill}
           />
-        </Link>
       </NavigationButton>
       <NavigationButton onClick={() => handleIconClick("/settings")}>
-        <Link to="/settings">
           <GearIcon
             iconHeight={isSelected("/settings").height}
             fillColor={isSelected("/settings").fill}
           />
-        </Link>
       </NavigationButton>
     </Navigation>
   );

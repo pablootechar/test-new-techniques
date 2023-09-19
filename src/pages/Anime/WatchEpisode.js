@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import ReactPlayer from "react-player";
 import { useParams } from "react-router-dom";
-import { CommentCard, Loading, SendComment } from "../../shared/components";
+import { CommentCard, Loading, MessageModal, SendComment } from "../../shared/components";
 import Api from "../../shared/Api";
 import DatabaseApi from "../../shared/DatabaseApi";
 import CustomVideoPlayer from "./components/CustomVideoPlayer";
@@ -60,6 +60,7 @@ export const WatchEpisode = () => {
   const [stateReload, setReloadState] = useState();
   const [showFullSynopsis, setShowFUllSynopsis] = useState(true);
   const [userIsPremium, setUserIsPremium] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const userInfos = localStorage.getItem("@animatrix/profile") || undefined;
   const playerRef = useRef();
 
@@ -153,6 +154,14 @@ export const WatchEpisode = () => {
 
   return typeof url !== "undefined" ? (
     <Container>
+      {showModal && (
+          <MessageModal
+            typeMessage="error"
+            textMessage="You need to login to post a comment!"
+            modalState={showModal}
+            handleStateOfModal={setShowModal}
+          />
+      )}
       {userIsPremium === true ? (
         <ReactPlayer
           ref={playerRef}
@@ -204,7 +213,7 @@ export const WatchEpisode = () => {
       </DetailsWatch>
       <h1>All comments</h1>
       <AllCommentsDiv>
-        <SendComment onCommentSent={handleSubmit} />
+        <SendComment onCommentSent={handleSubmit} showModal={showModal} setShowModal={setShowModal} />
         {typeof allComments !== "undefined" ? (
           allComments.map((comment) => {
             return (

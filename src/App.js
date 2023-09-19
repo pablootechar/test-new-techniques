@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { ThemeProvider } from "styled-components";
 import GlobalStyles from "./styles/global";
 import { NavigationBar, Search } from "./shared/components";
@@ -21,7 +21,9 @@ import {
   AnimeInfo,
   Home,
   MangaHome,
+  MangaInfo,
   Profile,
+  ReadChapterOfManga,
   SearchPage,
   Settings,
   ViewAllEpisodes,
@@ -32,9 +34,9 @@ import { RedirectToHomePage } from "./Redirect";
 
 function App() {
   const [currentTheme, setCurrentTheme] = useState(darkCyan);
-  const localStorageTheme = localStorage.getItem("@animatrix/theme");
-
+  
   useState(() => {
+    const localStorageTheme = localStorage.getItem("@animatrix/theme");
     if (localStorageTheme) {
       if (localStorageTheme === "darkCyan") {
         setCurrentTheme(darkCyan);
@@ -101,6 +103,11 @@ function App() {
             path="/manga-page/home"
             element={<MangaHome />}
             onLoad={prefetchMangaHome}
+          />
+          <Route path="/manga-page/:id/:name/" element={<MangaInfo />} />
+          <Route
+            path="/manga-page/:id/:name/:chapterNum"
+            element={<ReadChapterOfManga />}
           />
           <Route path="/profile" element={<Profile />} />
           <Route path="/profile/login" element={<Login />} />

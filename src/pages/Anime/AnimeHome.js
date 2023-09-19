@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import Api from "../../shared/Api";
 import { SHA512 } from "crypto-js";
 import DatabaseApi from "../../shared/DatabaseApi";
-import { Loading, Slider } from "../../shared/components";
+import { Loading, MessageModal, Slider } from "../../shared/components";
 import { styled } from "styled-components";
 
 const Container = styled.div`
@@ -83,6 +83,7 @@ export const AnimeHome = () => {
   const [rows, setRows] = useState([]);
   const [featured, setFeatured] = useState();
   const [favorites, setFavorites] = useState();
+  const [showModal, setShowModal] = useState();
   let loggedUser = localStorage.getItem("@animatrix/profile");
   loggedUser = JSON.parse(loggedUser) || undefined;
   const memoFeatured = useMemo(() => featured, [featured]);
@@ -154,6 +155,14 @@ export const AnimeHome = () => {
   return (
       typeof favorites !== "undefined" ? (
         <Container>
+          {showModal && (
+            <MessageModal 
+              typeMessage="error"
+              textMessage="You need to login to add an anime to favorites!"
+              modalState={showModal}
+              handleStateOfModal={setShowModal}
+            />
+          )}
           <Featured>
             <BackgroundImage
               src={memoFeatured?.attributes?.posterImage.original}
@@ -179,6 +188,8 @@ export const AnimeHome = () => {
                     animes={row.animes}
                     redirectTo="anime"
                     databaseRequest={favorites}
+                    showModal={showModal}
+                    setShowModal={setShowModal}
                   />
                 </li>
               ))}

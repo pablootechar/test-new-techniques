@@ -77,27 +77,38 @@ const ButtonSeeAllEpisodes = styled.button`
   }
 `;
 
-export const AnimeInfo = () => {
-  const [allEpisodes, setAllEpisodes] = useState();
-  const [animeInfo, setAnimeInfo] = useState();
-  const { id, name } = useParams();
+export const MangaInfo = () => {
+    const [allChapters, setAllChapters] = useState();
+    const [mangaInfo, setMangaInfo] = useState();
+    const { id, name } = useParams();
   const [showFullSynopsis, setShowFUllSynopsis] = useState(true);
   let i = 0;
 
+  const chapter = [
+    {
+      id: 1,
+      chapterNumber: 0
+    },
+    {
+      id: 2,
+      chapterNumber: 1
+    },
+    {
+      id: 3,
+      chapterNumber: 2
+    },
+  ]
+
   useEffect(() => {
+    setAllChapters(chapter);
+
     async function request() {
-      const episodes = await Api.getEpisodes(id, 20);
-      setAllEpisodes(episodes.data);
-      const info = await Api.getInfoByKitsu(id);
-      setAnimeInfo(info.data);
+      const info = await Api.getInfoOfMangaByKitsu(id);
+      setMangaInfo(info.data)
     }
 
     request();
   }, []);
-
-  const redirectToAllEpisodes = () => {
-    window.location.href = `/anime-page/all-episodes/${id}/${name}`;
-  };
 
   function replaceText(synopsis) {
     const replacedText = synopsis?.substring(0, 300);
@@ -110,20 +121,20 @@ export const AnimeInfo = () => {
 
   return (
     <>
-      {typeof allEpisodes !== "undefined" ? (
+      {typeof allChapters !== "undefined" ? (
         <Container>
           <InfoOfAnime>
             <ImageOfAnime
-              src={animeInfo?.attributes?.posterImage?.original}
+              src={mangaInfo?.attributes?.posterImage?.original}
               alt=""
             />
             <AnimeDescription>
-              <AnimeTitle>{animeInfo?.attributes?.canonicalTitle}</AnimeTitle>
-              {animeInfo?.attributes?.synopsis.length < 300 ? (
-                <Synopsis>{animeInfo?.attributes?.synopsis}</Synopsis>
+              <AnimeTitle>{mangaInfo?.attributes?.canonicalTitle}</AnimeTitle>
+              {mangaInfo?.attributes?.synopsis.length < 300 ? (
+                <Synopsis>{mangaInfo?.attributes?.synopsis}</Synopsis>
               ) : showFullSynopsis ? (
                 <Synopsis>
-                  {replaceText(animeInfo?.attributes?.synopsis)}
+                  {replaceText(mangaInfo?.attributes?.synopsis)}
                   <ButtonShowMore
                     onClick={() => setShowFUllSynopsis(!showFullSynopsis)}
                   >
@@ -132,7 +143,7 @@ export const AnimeInfo = () => {
                 </Synopsis>
               ) : (
                 <Synopsis>
-                  {animeInfo?.attributes?.synopsis}
+                  {mangaInfo?.attributes?.synopsis}
                   <ButtonShowMore
                     onClick={() => setShowFUllSynopsis(!showFullSynopsis)}
                   >
@@ -143,33 +154,32 @@ export const AnimeInfo = () => {
             </AnimeDescription>
           </InfoOfAnime>
           <EpisodeList>
-            {allEpisodes.map((ep) => {
+            {allChapters.map((ep) => {
               let descriptionAnime = () => {
                 return (
-                  <span key={ep.attributes.number}>
-                    <strong>{`S${ep.attributes.seasonNumber}EP${ep.attributes.number} - `}</strong>
-                    {`${ep.attributes.canonicalTitle}`}
+                  <span key={ep.id}>
+                    <strong>{`Chapter - ${ep.chapterNumber}`}</strong>
                   </span>
                 );
               };
-              const urlToRedirect = `/anime-page/${id}/${name}/${ep.attributes.number}`;
+              const urlToRedirect = `/manga-page/${id}/${name}/${ep.chapterNumber}`;
               i++;
               return (
                 <Link
                   to={urlToRedirect}
-                  key={`${name}_episode${i}_${aleatoryNumberGenerator(i, i * 100)}`}
+                  key={`${name}_cap${i}_${aleatoryNumberGenerator(i, i * 100)}`}
                 >
                   <AnimeOrMangaCard
-                    imgUrl={ep.attributes?.thumbnail?.original}
+                    imgUrl={""}
                     title={""}
                     description={descriptionAnime()}
                   />
                 </Link>
               );
             })}
-            <ButtonSeeAllEpisodes onClick={() => redirectToAllEpisodes()}>
+            {/* <ButtonSeeAllEpisodes onClick={() => redirectToAllEpisodes()}>
               See All Episodes
-            </ButtonSeeAllEpisodes>
+            </ButtonSeeAllEpisodes> */}
           </EpisodeList>
         </Container>
       ) : (

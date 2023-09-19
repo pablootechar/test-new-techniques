@@ -170,12 +170,10 @@ export function Profile() {
   const [favorites, setFavorites] = useState();
   const [showModal, setShowModal] = useState(false);
   const [showReturnUpdatePhoto, setShowReturnUpdatePhoto] = useState(false);
-  const loggedUser =
-    JSON.parse(localStorage.getItem("@animatrix/profile")) || undefined;
-  const updatedPhoto =
-    localStorage.getItem("@animatrix/recent-update-photo") || undefined;
-
+  const loggedUser = JSON.parse(localStorage.getItem("@animatrix/profile")) || undefined;
+  const updatedPhoto = localStorage.getItem("@animatrix/recent-update-photo") || undefined;
   let i = 0;
+  let showModalUpdatedPhoto = 0;
 
   useEffect(() => {
     async function setEssentialInfo() {
@@ -188,7 +186,8 @@ export function Profile() {
       setFavorites(favoritesUser);
     }
 
-    if (updatedPhoto) {
+    if (updatedPhoto && showModalUpdatedPhoto === 0) {
+      
       setShowReturnUpdatePhoto(!showReturnUpdatePhoto);
     }
 
@@ -202,26 +201,22 @@ export function Profile() {
   return (
     <Container>
       {showModal && (
-        // <MessageModal
-        //   typeMessage="error"
-        //   textMessage="your profile photo has been changed successfully"
-        //   modalState={showModal}
-        //   handleStateOfModal={setShowModal} />
         <ModalPhoto isOpen={showModal} setOpen={setShowModal} />
-      )}
-
-      {showReturnUpdatePhoto && (
-        <MessageModal
-          typeMessage="success"
-          textMessage="your profile photo has been changed successfully"
-          modalState={showReturnUpdatePhoto}
-          handleStateOfModal={setShowReturnUpdatePhoto} />
       )}
 
       {typeof loggedUser !== "undefined" ? (
         <>
           {typeof userInfo !== "undefined" ? (
             <Content>
+              {showReturnUpdatePhoto && (
+                showModalUpdatedPhoto = 10,
+                <MessageModal
+                  typeMessage="success"
+                  textMessage="Your profile photo has been changed successfully!"
+                  modalState={showReturnUpdatePhoto}
+                  handleStateOfModal={setShowReturnUpdatePhoto}
+                />
+              )}
               <UserInfo>
                 <DivUserPhoto>
                   <EditButton onClick={() => setShowModal(!showModal)}>

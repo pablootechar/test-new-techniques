@@ -17,8 +17,8 @@ const ButtonFavorite = styled.div`
   cursor: pointer;
 `;
 
-export const StarButton = (data) => {
-  const { listInfo, databaseRequest, aniId, type } = data;
+export const StarButton = ({ listInfo, databaseRequest, aniId, type, showModal, setShowModal }) => {
+  // const { listInfo, databaseRequest, aniId, type } = data;
   const [isFavorited, setIsFavorited] = useState(false);
   let loggedUser = localStorage.getItem("@animatrix/profile");
   loggedUser = JSON.parse(loggedUser) || undefined;
@@ -53,14 +53,18 @@ export const StarButton = (data) => {
       anime_id: id_anime_api_to_add,
     };
 
-    if (isFavorited) {
-      // Remover dos favoritos
-      await axios.delete(urlRemoveFavorite).then((response) => {});
-      setIsFavorited(false);
+    if (typeof loggedUser !== "undefined") {
+      if (isFavorited) {
+        // Remover dos favoritos
+        await axios.delete(urlRemoveFavorite).then((response) => {});
+        setIsFavorited(false);
+      } else {
+        // Adicionar aos favoritos
+        await axios.post(baseUrl, infoAddFavorite).then((response) => {});
+        setIsFavorited(true);
+      }
     } else {
-      // Adicionar aos favoritos
-      await axios.post(baseUrl, infoAddFavorite).then((response) => {});
-      setIsFavorited(true);
+      setShowModal(!showModal)
     }
   };
 
