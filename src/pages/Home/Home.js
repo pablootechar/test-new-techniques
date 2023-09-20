@@ -11,7 +11,7 @@ import secondSungJinWoo from "./assets/sung_jin_woo2.webp";
 
 // -------------------------------------------------------- //
 
-import React from "react";
+import React, { useState } from "react";
 import { styled } from "styled-components";
 import {
   MainHome,
@@ -19,6 +19,8 @@ import {
   ScrollButton,
   ShopItemPremium,
 } from "./components";
+
+import { MessageModal } from "../../shared/components";
 
 const DivHomeTitle = styled.div`
   position: absolute;
@@ -105,8 +107,18 @@ const images = [
 const alNum = Math.floor(Math.random() * images.length);
 
 export const Home = () => {
+  const [showModal, setShowModal] = useState(false);
+
   return (
     <Container>
+      {showModal && (
+        <MessageModal
+          typeMessage="error"
+          textMessage="Create an account or log into an existing account to be able to purchase this feature!"
+          modalState={showModal}
+          handleStateOfModal={setShowModal}
+        />
+      )}
       <MainHome>
         <HomeTitle />
         <HomeDescription>Welcome, Otaku!</HomeDescription>
@@ -115,7 +127,7 @@ export const Home = () => {
       </MainHome>
       <ShopHome>
         <ShopItemFree />
-        <ShopItemPremium />
+        <ShopItemPremium showModal={showModal} setShowModal={setShowModal} />
       </ShopHome>
     </Container>
   );

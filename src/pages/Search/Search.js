@@ -93,7 +93,6 @@ export const SearchPage = () => {
   const { data: dataToBeRendering, loading } = useFetch(patternTextSearch);
 
   const redirectPage = async (animeId, animeName, animeShowType) => {
-    console.log(animeShowType)
     let name = animeName;
     if (animeShowType === "TV") {
       name = `${name} (TV)`;
@@ -123,7 +122,6 @@ export const SearchPage = () => {
           }
         }
         test();
-        console.log(theRealAnimeSlug);
       })
       .catch((error) => {
         console.log(error);

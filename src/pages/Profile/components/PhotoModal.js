@@ -3,11 +3,10 @@ import DatabaseApi from "../../../shared/DatabaseApi";
 import { Loading } from "../../../shared/components";
 import styled from "styled-components";
 import { shade } from "polished";
-// import modalStyle from "../Css/Modal.module.css"
 
 const Container = styled.div`
   position: fixed;
-  z-index: 100;
+  z-index: 10000;
   height: 100vh;
   width: 100%;
 `;
@@ -49,7 +48,8 @@ const XIcon = styled.i`
   font-size: 3vh;
 `;
 
-const ListOfPhotos = styled.div``;
+const ListOfPhotos = styled.div`
+`;
 
 const ListOfCategoryTitle = styled.h3`
   font-size: 25px;

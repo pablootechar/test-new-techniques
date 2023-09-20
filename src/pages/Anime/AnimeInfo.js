@@ -143,33 +143,40 @@ export const AnimeInfo = () => {
             </AnimeDescription>
           </InfoOfAnime>
           <EpisodeList>
-            {allEpisodes.map((ep) => {
-              let descriptionAnime = () => {
+            {name !== "undefined" ? (
+              <>
+              {allEpisodes.map((ep) => {
+                let descriptionAnime = () => {
+                  return (
+                    <span key={ep.attributes.number}>
+                      <strong>{`S${ep.attributes.seasonNumber}EP${ep.attributes.number} - `}</strong>
+                      {`${ep.attributes.canonicalTitle}`}
+                    </span>
+                  );
+                };
+                const urlToRedirect = `/anime-page/${id}/${name}/${ep.attributes.number}`;
+                i++;
                 return (
-                  <span key={ep.attributes.number}>
-                    <strong>{`S${ep.attributes.seasonNumber}EP${ep.attributes.number} - `}</strong>
-                    {`${ep.attributes.canonicalTitle}`}
-                  </span>
+                  <Link
+                    to={urlToRedirect}
+                    key={`${name}_episode${i}_${aleatoryNumberGenerator(i, i * 100)}`}
+                  >
+                    <AnimeOrMangaCard
+                      imgUrl={ep.attributes?.thumbnail?.original}
+                      title={""}
+                      description={descriptionAnime()}
+                    />
+                  </Link>
                 );
-              };
-              const urlToRedirect = `/anime-page/${id}/${name}/${ep.attributes.number}`;
-              i++;
-              return (
-                <Link
-                  to={urlToRedirect}
-                  key={`${name}_episode${i}_${aleatoryNumberGenerator(i, i * 100)}`}
-                >
-                  <AnimeOrMangaCard
-                    imgUrl={ep.attributes?.thumbnail?.original}
-                    title={""}
-                    description={descriptionAnime()}
-                  />
-                </Link>
-              );
-            })}
-            <ButtonSeeAllEpisodes onClick={() => redirectToAllEpisodes()}>
-              See All Episodes
-            </ButtonSeeAllEpisodes>
+              })}
+              <ButtonSeeAllEpisodes onClick={() => redirectToAllEpisodes()}>
+                See All Episodes
+              </ButtonSeeAllEpisodes>
+              </>
+
+            ) : (
+              <h1>Unable to find any episode :(</h1>
+            )}
           </EpisodeList>
         </Container>
       ) : (

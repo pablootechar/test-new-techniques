@@ -1,7 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import ReactPlayer from "react-player";
 import { useParams } from "react-router-dom";
-import { CommentCard, Loading, MessageModal, SendComment } from "../../shared/components";
+import {
+  CommentCard,
+  Loading,
+  MessageModal,
+  SendComment,
+} from "../../shared/components";
 import Api from "../../shared/Api";
 import DatabaseApi from "../../shared/DatabaseApi";
 import CustomVideoPlayer from "./components/CustomVideoPlayer";
@@ -61,6 +66,7 @@ export const WatchEpisode = () => {
   const [showFullSynopsis, setShowFUllSynopsis] = useState(true);
   const [userIsPremium, setUserIsPremium] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [error, setError] = useState();
   const userInfos = localStorage.getItem("@animatrix/profile") || undefined;
   const playerRef = useRef();
 
@@ -82,7 +88,11 @@ export const WatchEpisode = () => {
       const episode = `${name}-episode-${episodeNum}`;
       const episodeLinks = await Api.getStreamingUrl(episode);
 
-      if (episodeLinks !== "") {
+      if (episodeLinks === "Unable to get link") {
+        setError(episodeLinks);
+      }
+
+      if (episodeLinks !== "" && episodeLinks !== "Unable to get link") {
         episodeLinks.sources?.map((links) => {
           if (links.quality === "1080p") {
             return setUrl(links.url);
@@ -129,10 +139,6 @@ export const WatchEpisode = () => {
     };
   }, [stateReload]);
 
-  const redirectToAllEpisodes = () => {
-    window.location.href = `/anime-page/all-episodes/${animeId}/${name}`;
-  };
-
   const scrollToBottom = () => {
     window.scrollTo({
       top: document.documentElement.scrollHeight,
@@ -152,81 +158,89 @@ export const WatchEpisode = () => {
     return replacedText?.length >= 300 ? replacedText + "..." : replacedText;
   }
 
-  return typeof url !== "undefined" ? (
-    <Container>
-      {showModal && (
+  return typeof url !== "undefined" || error === "Unable to get link" ? (
+    error === "Unable to get link" ? (
+      <h1>It was not possible to obtain the episodes for this anime at the moment</h1>
+    ) : (
+      <Container>
+        {showModal && (
           <MessageModal
             typeMessage="error"
             textMessage="You need to login to post a comment!"
             modalState={showModal}
             handleStateOfModal={setShowModal}
           />
-      )}
-      {userIsPremium === true ? (
-        <ReactPlayer
-          ref={playerRef}
-          width="100%"
-          height="40%"
-          url={url}
-          controls
-        />
-      ) : (
-        <CustomVideoPlayer
-          width="100%"
-          height="60%"
-          adVideo="https://www.youtube.com/embed/INIloHNP8_Q?si=xmgdnKn2x9XMY6f9"
-          principalVideo={url}
-          playing
-        />
-      )}
-      <DetailsWatch>
-        <AnimeTitle>{`S${episodeInfos?.attributes?.seasonNumber}EP${episodeInfos?.attributes?.number} - ${episodeInfos?.attributes?.canonicalTitle}`}</AnimeTitle>
-        {episodeInfos?.attributes?.synopsis?.length < 300 ? (
-          <Synopsis>{episodeInfos?.attributes?.synopsis}</Synopsis>
-        ) : showFullSynopsis ? (
-          <Synopsis>
-            {replaceText(episodeInfos?.attributes?.synopsis)}
-            <ButtonShowMore
-              onClick={() => setShowFUllSynopsis(!showFullSynopsis)}
-            >
-              Show more.
-            </ButtonShowMore>
-          </Synopsis>
-        ) : (
-          <Synopsis>
-            {episodeInfos?.attributes?.synopsis}
-            <ButtonShowMore
-              onClick={() => setShowFUllSynopsis(!showFullSynopsis)}
-            >
-              Show less.
-            </ButtonShowMore>
-          </Synopsis>
         )}
-        {/* <h1>{`S${episodeInfos?.attributes?.seasonNumber}EP${episodeInfos?.attributes?.number} - ${episodeInfos?.attributes?.canonicalTitle}`}</h1>
+        {userIsPremium === true ? (
+          <ReactPlayer
+            ref={playerRef}
+            width="100%"
+            height="40%"
+            url={url}
+            controls
+          />
+        ) : (
+          <CustomVideoPlayer
+            width="100%"
+            height="60%"
+            adVideo="https://www.youtube.com/embed/INIloHNP8_Q?si=xmgdnKn2x9XMY6f9"
+            principalVideo={url}
+            playing
+          />
+        )}
+        <DetailsWatch>
+          <AnimeTitle>{`S${episodeInfos?.attributes?.seasonNumber}EP${episodeInfos?.attributes?.number} - ${episodeInfos?.attributes?.canonicalTitle}`}</AnimeTitle>
+          {episodeInfos?.attributes?.synopsis?.length < 300 ? (
+            <Synopsis>{episodeInfos?.attributes?.synopsis}</Synopsis>
+          ) : showFullSynopsis ? (
+            <Synopsis>
+              {replaceText(episodeInfos?.attributes?.synopsis)}
+              <ButtonShowMore
+                onClick={() => setShowFUllSynopsis(!showFullSynopsis)}
+              >
+                Show more.
+              </ButtonShowMore>
+            </Synopsis>
+          ) : (
+            <Synopsis>
+              {episodeInfos?.attributes?.synopsis}
+              <ButtonShowMore
+                onClick={() => setShowFUllSynopsis(!showFullSynopsis)}
+              >
+                Show less.
+              </ButtonShowMore>
+            </Synopsis>
+          )}
+          {/* <h1>{`S${episodeInfos?.attributes?.seasonNumber}EP${episodeInfos?.attributes?.number} - ${episodeInfos?.attributes?.canonicalTitle}`}</h1>
         <p>{episodeInfos?.attributes?.synopsis}</p> */}
-        {/* <button
+          {/* <button
           className="button-watch responsive"
           onClick={() => redirectToAllEpisodes()}
         >
           See All Episodes
         </button> */}
-      </DetailsWatch>
-      <h1>All comments</h1>
-      <AllCommentsDiv>
-        <SendComment onCommentSent={handleSubmit} showModal={showModal} setShowModal={setShowModal} />
-        {typeof allComments !== "undefined" ? (
-          allComments.map((comment) => {
-            return (
-              <div key={comment.comment_id}>
-                <CommentCard comment={comment} shouldReload={stateReload} />
-              </div>
-            );
-          })
-        ) : (
-          <Loading />
-        )}
-      </AllCommentsDiv>
-    </Container>
+        </DetailsWatch>
+        <h1>All comments</h1>
+        <AllCommentsDiv>
+          <SendComment
+            onCommentSent={handleSubmit}
+            showModal={showModal}
+            setShowModal={setShowModal}
+          />
+          {typeof allComments !== "undefined" ? (
+            allComments.map((comment) => {
+              return (
+                <div key={comment.comment_id}>
+                  <CommentCard comment={comment} shouldReload={stateReload} />
+                </div>
+              );
+            })
+          ) : (
+            <Loading />
+          )}
+        </AllCommentsDiv>
+      </Container>
+    )
   ) : (
     <Loading />
   );

@@ -3,6 +3,8 @@ import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { styled } from "styled-components";
 import { StarButton } from "./StarButton";
+import { useNavigate } from "react-router-dom";
+import Api from "../Api";
 
 const responsive = {
   superLargeDesktop: {
@@ -79,17 +81,40 @@ const replaceTitle = (animeName) => {
 
 export const Slider = React.memo(
   ({ title, animes = undefined, redirectTo = "", databaseRequest, showModal, setShowModal }) => {
-
-
-    const convertToSlug = (text) => {
-      return text
-        .toLowerCase() 
-        .replace(/\s+/g, "-")
-        .replace(/[\(\)]/g, "");
-    };
-
-    const redirectPage = (animeId, animeName) => {
-      window.location.href = `/${redirectTo}-page/${animeId}/${convertToSlug(animeName)}/`;
+    const navigate = useNavigate();
+    const redirectPage = async (animeId, animeName, animeShowType) => {
+      let name = animeName;
+      if (animeShowType === "TV") {
+        name = `${name} (TV)`;
+      }
+  
+      await Api.getIdInGogoAnimeApi(name, 0)
+        .then((response) => {
+          const theRealAnimeSlug = response?.results[0]?.id;
+  
+          async function test() {
+            if (typeof theRealAnimeSlug === "undefined") {
+              await Api.getIdInGogoAnimeApi(animeName, 0).then((response) => {
+                console.log(response.results[0]?.id)
+                localStorage.setItem(
+                  "@animatrix/current-page",
+                  `/anime-page/${animeId}/${response.results[0]?.id}/`
+                );
+                navigate(`/anime-page/${animeId}/${response.results[0]?.id}/`);
+              })
+            } else {
+              localStorage.setItem(
+                "@animatrix/current-page",
+                `/anime-page/${animeId}/${theRealAnimeSlug}/`
+              );
+              navigate(`/anime-page/${animeId}/${theRealAnimeSlug}/`);
+            }
+          }
+          test();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     };
 
     return (
@@ -118,7 +143,7 @@ export const Slider = React.memo(
                     />
                     <ItemInfo
                       onClick={() => {
-                        redirectPage(infoCard.id, infoCard.attributes?.titles?.en_jp);
+                        redirectPage(infoCard.id, infoCard.attributes?.titles?.en_jp, infoCard.attributes?.showType);
                       }}
                     >
                       <IncorporateAnImage>

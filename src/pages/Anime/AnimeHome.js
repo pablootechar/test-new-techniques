@@ -121,7 +121,7 @@ export const AnimeHome = () => {
     setRows(rows);
     setFeatured(featuredItem);
     setFavorites(favoritesUser);
-  }, []);
+  }, [featured, loggedUser?.email]);
 
   useEffect(() => {
     function loadLocal() {
