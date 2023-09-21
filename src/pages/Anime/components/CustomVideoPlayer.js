@@ -71,7 +71,6 @@ const CustomVideoPlayer = ({ adVideo, principalVideo }) => {
             onProgress={(state) => {
               let progress = state.loaded;
               if (progress >= 50) {
-                console.log(playerRef.current?.player);
               }
               // Manipular exibição de anúncios Mid-Roll aqui com base no progresso do vídeo
             }}

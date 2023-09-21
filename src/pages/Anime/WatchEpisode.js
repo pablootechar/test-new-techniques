@@ -120,7 +120,6 @@ export const WatchEpisode = () => {
     const handleOrientationChange = () => {
       const isLandscape =
         window.innerWidth > window.innerHeight && !document.fullscreenElement;
-      console.log(isLandscape);
 
       if (isLandscape) {
         // Se o dispositivo está em orientação paisagem, ative o modo tela cheia

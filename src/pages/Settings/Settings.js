@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import { ThemeSelector, UserInfo } from "./components";
+import { AdminButton, ThemeSelector, UserInfo } from "./components";
 import { Loading, MessageModal } from "../../shared/components";
 import DatabaseApi from "../../shared/DatabaseApi";
 import { SHA512 } from "crypto-js";
@@ -94,6 +94,7 @@ export const Settings = () => {
         showModal={showMessage}
         setShowModal={setShowMessage}
       />
+      {userInfo?.isAdmin === 1 && <AdminButton />}
       <ThemeSelector />
       <Button
         ref={buttonRef}

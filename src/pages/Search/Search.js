@@ -97,16 +97,15 @@ export const SearchPage = () => {
     if (animeShowType === "TV") {
       name = `${name} (TV)`;
     }
+    name = name.replace("/", " ");
 
     await Api.getIdInGogoAnimeApi(name, 0)
       .then((response) => {
-        console.log(name);
         const theRealAnimeSlug = response?.results[0]?.id;
 
         async function test() {
           if (typeof theRealAnimeSlug === "undefined") {
             await Api.getIdInGogoAnimeApi(animeName, 0).then((response) => {
-              console.log(response.results[0]?.id)
               localStorage.setItem(
                 "@animatrix/current-page",
                 `/anime-page/${animeId}/${response.results[0]?.id}/`

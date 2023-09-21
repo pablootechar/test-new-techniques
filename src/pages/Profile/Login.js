@@ -173,7 +173,7 @@ export default function Login() {
             .then((response) => {
               console.log(response);
             });
-          window.location.href = "/login";
+          window.location.href = "/profile/login";
         } else {
           alert("Esse email já existe");
         }

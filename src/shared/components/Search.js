@@ -54,7 +54,6 @@ export const Search = () => {
 
   const buttonSearchClick = () => {
     if (showSearchButton && showSearchInput) {
-      console.log(inputRef.current.value);
       if (inputRef.current.value !== "") {
         localStorage.setItem("@animatrix/text_search", inputRef.current.value);
         window.location.href = "/search";

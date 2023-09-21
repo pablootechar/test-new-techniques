@@ -1,34 +1,11 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { ThemeProvider } from "styled-components";
 import GlobalStyles from "./styles/global";
 import { NavigationBar, Search } from "./shared/components";
 import { useState } from "react";
 import { BrowserRouter, Routes as Switch, Route } from "react-router-dom";
-import {
-  darkCrimson,
-  darkCyan,
-  darkGreen,
-  darkNavyBlue,
-  darkOrange,
-  darkPink,
-  darkPurple,
-  darkRed,
-  darkSkyBlue,
-  darkYellow,
-} from "./styles";
-import {
-  AnimeHome,
-  AnimeInfo,
-  Home,
-  MangaHome,
-  MangaInfo,
-  Profile,
-  ReadChapterOfManga,
-  SearchPage,
-  Settings,
-  ViewAllEpisodes,
-  WatchEpisode,
-} from "./pages";
+import { darkCrimson, darkCyan, darkGreen, darkNavyBlue, darkOrange, darkPink, darkPurple, darkRed, darkSkyBlue, darkYellow } from "./styles";
+import { AdminPage, AnimeHome, AnimeInfo, ErrorPage, Home, MangaHome, MangaInfo, Profile, ReadChapterOfManga, SearchPage, Settings, ViewAllEpisodes, WatchEpisode } from "./pages";
 import Login from "./pages/Profile/Login";
 import { RedirectToHomePage } from "./Redirect";
 
@@ -81,7 +58,7 @@ function App() {
         <NavigationBar />
         <Search />
         <Switch>
-          {/* <Route path="*" element={<ErrorPage />} /> */}
+          <Route path="*" element={<ErrorPage />} />
           <Route path="/" element={<RedirectToHomePage /> } />
           <Route path="/home" element={<Home />} />
           <Route path="/search" element={<SearchPage />} />
@@ -109,6 +86,7 @@ function App() {
             path="/manga-page/:id/:name/:chapterNum"
             element={<ReadChapterOfManga />}
           />
+          <Route path="/supremacy-of-the-masters-of-truco" element={<AdminPage />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/profile/login" element={<Login />} />
           <Route path="/settings" element={<Settings />} />

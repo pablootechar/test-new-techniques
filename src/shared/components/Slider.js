@@ -82,25 +82,30 @@ const replaceTitle = (animeName) => {
 export const Slider = React.memo(
   ({ title, animes = undefined, redirectTo = "", databaseRequest, showModal, setShowModal }) => {
     const navigate = useNavigate();
-    const redirectPage = async (animeId, animeName, animeShowType) => {
+    const redirectPage = async (allData, animeId, animeName, animeShowType) => {
       let name = animeName;
       if (animeShowType === "TV") {
         name = `${name} (TV)`;
       }
-  
+
       await Api.getIdInGogoAnimeApi(name, 0)
         .then((response) => {
           const theRealAnimeSlug = response?.results[0]?.id;
   
           async function test() {
+            if (allData.type === "manga") {
+              return navigate(`/manga-page/${animeId}/${allData?.attributes?.slug}/`);
+            }
+
             if (typeof theRealAnimeSlug === "undefined") {
               await Api.getIdInGogoAnimeApi(animeName, 0).then((response) => {
-                console.log(response.results[0]?.id)
+                let redirectUrl = response.results[0]?.id;
+                redirectUrl = redirectUrl?.replace("-dub", "");
                 localStorage.setItem(
                   "@animatrix/current-page",
-                  `/anime-page/${animeId}/${response.results[0]?.id}/`
+                  `/anime-page/${animeId}/${redirectUrl}/`
                 );
-                navigate(`/anime-page/${animeId}/${response.results[0]?.id}/`);
+                navigate(`/anime-page/${animeId}/${redirectUrl}/`);
               })
             } else {
               localStorage.setItem(
@@ -143,7 +148,7 @@ export const Slider = React.memo(
                     />
                     <ItemInfo
                       onClick={() => {
-                        redirectPage(infoCard.id, infoCard.attributes?.titles?.en_jp, infoCard.attributes?.showType);
+                        redirectPage(infoCard, infoCard.id, infoCard.attributes?.titles?.en_jp, infoCard.attributes?.showType);
                       }}
                     >
                       <IncorporateAnImage>

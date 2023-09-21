@@ -22,6 +22,7 @@ const InfoOfAnime = styled.div`
   margin: 20px 8%;
   align-items: center;
   flex-wrap: wrap;
+  word-wrap: break-word;
 `;
 
 const EpisodeList = styled.div`
@@ -45,6 +46,7 @@ const AnimeDescription = styled.div`
 `;
 
 const AnimeTitle = styled.h1`
+  width: 80%;
   text-align: center;
   margin: 10px 0;
   font-size: 45px;
@@ -102,7 +104,7 @@ export const AnimeInfo = () => {
   function replaceText(synopsis) {
     const replacedText = synopsis?.substring(0, 300);
     return replacedText?.length >= 300 ? replacedText + "..." : replacedText;
-  };
+  }
 
   const aleatoryNumberGenerator = (max, min) => {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -145,35 +147,41 @@ export const AnimeInfo = () => {
           <EpisodeList>
             {name !== "undefined" ? (
               <>
-              {allEpisodes.map((ep) => {
-                let descriptionAnime = () => {
+                {allEpisodes.map((ep) => {
+                  let descriptionAnime = () => {
+                    return (
+                      <span key={ep.attributes.number}>
+                        <strong>{`S${ep.attributes.seasonNumber}EP${ep.attributes.number}`}</strong>
+                        {`${
+                          ep.attributes.canonicalTitle !== null
+                            ? ` - ${ep.attributes.canonicalTitle}`
+                            : ""
+                        }`}
+                      </span>
+                    );
+                  };
+                  const urlToRedirect = `/anime-page/${id}/${name}/${ep.attributes.number}`;
+                  i++;
                   return (
-                    <span key={ep.attributes.number}>
-                      <strong>{`S${ep.attributes.seasonNumber}EP${ep.attributes.number} - `}</strong>
-                      {`${ep.attributes.canonicalTitle}`}
-                    </span>
+                    <Link
+                      to={urlToRedirect}
+                      key={`${name}_episode${i}_${aleatoryNumberGenerator(
+                        i,
+                        i * 100
+                      )}`}
+                    >
+                      <AnimeOrMangaCard
+                        imgUrl={ep.attributes?.thumbnail?.original}
+                        title={""}
+                        description={descriptionAnime()}
+                      />
+                    </Link>
                   );
-                };
-                const urlToRedirect = `/anime-page/${id}/${name}/${ep.attributes.number}`;
-                i++;
-                return (
-                  <Link
-                    to={urlToRedirect}
-                    key={`${name}_episode${i}_${aleatoryNumberGenerator(i, i * 100)}`}
-                  >
-                    <AnimeOrMangaCard
-                      imgUrl={ep.attributes?.thumbnail?.original}
-                      title={""}
-                      description={descriptionAnime()}
-                    />
-                  </Link>
-                );
-              })}
-              <ButtonSeeAllEpisodes onClick={() => redirectToAllEpisodes()}>
-                See All Episodes
-              </ButtonSeeAllEpisodes>
+                })}
+                <ButtonSeeAllEpisodes onClick={() => redirectToAllEpisodes()}>
+                  See All Episodes
+                </ButtonSeeAllEpisodes>
               </>
-
             ) : (
               <h1>Unable to find any episode :(</h1>
             )}
