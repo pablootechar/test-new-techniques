@@ -32,7 +32,7 @@ const CommentButton = styled.button`
   color: #f5f5f5;
 `;
 
-export const SendComment = ({ onCommentSent, showModal, setShowModal }) => {
+export const SendComment = ({ onCommentSent, showModal, setShowModal, setErrorMessage }) => {
   const params = useParams();
   const { id: animeId, episodeNum } = params;
   const storageUserInfo = localStorage.getItem("@animatrix/profile");
@@ -43,7 +43,13 @@ export const SendComment = ({ onCommentSent, showModal, setShowModal }) => {
   };
 
   const sendComment = async () => {
+    const inputText = document.getElementById("input-comment");
+    if (inputText) {
+      setErrorMessage("The comment cannot be empty");
+      return setShowModal(!showModal);
+    }
     if (storageUserInfo === null || typeof storageUserInfo === "undefined") {
+      setErrorMessage("You need to login to post a comment!")
       setShowModal(!showModal);
     } else {
       const { id: userId } = JSON.parse(storageUserInfo);

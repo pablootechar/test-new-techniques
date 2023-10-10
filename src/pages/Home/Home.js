@@ -1,5 +1,3 @@
-// import of images
-
 import kikyou from "./assets/kikiyou.webp";
 import kyoraku from "./assets/Kyoraku.webp";
 import meliodas from "./assets/meliodas.webp";
@@ -8,9 +6,6 @@ import gojo from "./assets/satoru.webp";
 import seshomaru from "./assets/seshomaru.webp";
 import firstSungJinWoo from "./assets/sung_jin_woo.webp";
 import secondSungJinWoo from "./assets/sung_jin_woo2.webp";
-
-// -------------------------------------------------------- //
-
 import React, { useState } from "react";
 import { styled } from "styled-components";
 import {
@@ -19,7 +14,6 @@ import {
   ScrollButton,
   ShopItemPremium,
 } from "./components";
-
 import { MessageModal } from "../../shared/components";
 
 const DivHomeTitle = styled.div`

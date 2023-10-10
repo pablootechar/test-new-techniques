@@ -26,29 +26,28 @@ const Button = styled.button`
 export const Settings = () => {
   const [canRender, setCanRender] = useState(false);
   const isLogged = localStorage.getItem("@animatrix/profile");
-
-  const localInfos =
-    JSON.parse(localStorage.getItem("@animatrix/profile")) || undefined;
+  const localInfos = JSON.parse(localStorage.getItem("@animatrix/profile")) || undefined;
   const [userInfo, setUserInfo] = useState();
   const [userPhoto, setUserPhoto] = useState();
-  const [loggedOutUser, setLoggedOutUser] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
   const encryptedEmail = SHA512(localInfos?.email).toString();
   const buttonRef = useRef();
+  const defaultUserEmail = "cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e";
 
   useEffect(() => {
     async function setEssentialInfo() {
-      let infoUser = await DatabaseApi.isLogged(encryptedEmail);
+      let infoUser = await DatabaseApi.isLogged(
+        encryptedEmail || defaultUserEmail
+      );
+      localStorage.setItem("@animatrix/user-photoId", infoUser?.photoId)
       let imageUrl = await DatabaseApi.getImageUrl(infoUser?.photoId);
+
       setUserInfo(infoUser);
       setUserPhoto(imageUrl);
     }
 
-    if (localInfos?.id) {
-      setEssentialInfo();
-    } else {
-      setLoggedOutUser(true);
-    }
+    setEssentialInfo();
+
     setTimeout(() => {
       setCanRender(true);
     }, 1000);
@@ -81,7 +80,7 @@ export const Settings = () => {
       {showMessage && (
         <MessageModal
           typeMessage="error"
-          textMessage="calma lá paizão, ainda n fiz essa tela"
+          textMessage={userInfo?.id === 1 && "Você precisa fazer login antes"}
           modalState={showMessage}
           handleStateOfModal={setShowMessage}
         />
@@ -90,7 +89,7 @@ export const Settings = () => {
         userName={userInfo?.name}
         userPlan={userInfo?.isPremium}
         userPhoto={userPhoto}
-        loggedOutUser={loggedOutUser}
+        userId={userInfo?.id}
         showModal={showMessage}
         setShowModal={setShowMessage}
       />

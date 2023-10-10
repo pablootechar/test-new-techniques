@@ -11,21 +11,21 @@ const DivOfUserInfo = styled.div`
 `;
 
 const UserImage = styled.img`
-    height: 50px;
-    width: 50px;
-    border-radius: 50%;
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
 `;
 
 const UserNameAndPlan = styled.div`
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    padding-left: 15px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding-left: 15px;
 `;
 
 const UserName = styled.h1`
-    font-size: 18px;
-    font-weight: bold;
+  font-size: 18px;
+  font-weight: bold;
 `;
 
 const UserPlan = styled.h5`
@@ -67,21 +67,32 @@ const UserPlan = styled.h5`
   }
 `;
 
-export const UserInfo = ({ userPhoto, userName, userPlan, loggedOutUser, showModal, setShowModal }) => {
+export const UserInfo = ({
+  userPhoto,
+  userName,
+  userPlan,
+  userId,
+  showModal,
+  setShowModal,
+}) => {
+  const userClick = () => {
+    if (userId === 1) {
+      return setShowModal(!showModal);
+    } else {
+      return (window.location.href = "/settings/edit-profile");
+    }
+  };
+
   return (
-    <DivOfUserInfo onClick={() => setShowModal(!showModal)}>
-      {loggedOutUser ? (
-        <div>Faz login pae</div>
-      ) : (
-        <>
-          <UserImage src={userPhoto} alt="" />
-          <UserNameAndPlan>
-            <UserName>{userName}</UserName>
-            <UserPlan className={userPlan === 1 ? "premium" : "free"}>{userPlan === 1 ? "Premium" : "Free"}</UserPlan>
-          </UserNameAndPlan>
-          <i className="fa-solid fa-angle-right"></i>
-        </>
-      )}
+    <DivOfUserInfo onClick={() => userClick()}>
+      <UserImage src={userPhoto} alt="" />
+      <UserNameAndPlan>
+        <UserName>{userName}</UserName>
+        <UserPlan className={userPlan === 1 ? "premium" : "free"}>
+          {userPlan === 1 ? "Premium" : "Free"}
+        </UserPlan>
+      </UserNameAndPlan>
+      <i className="fa-solid fa-angle-right"></i>
     </DivOfUserInfo>
   );
 };

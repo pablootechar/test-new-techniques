@@ -1,6 +1,7 @@
 export * from "./Navigation"
 export * from "./Slider"
 export * from "./Loading"
+export * from "./AlternativeLoading"
 export * from "./StarButton"
 export * from "./AnimeOrMangaCard"
 export * from "./SendComment"

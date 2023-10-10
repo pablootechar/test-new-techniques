@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import Api from "../../shared/Api";
 import { SHA512 } from "crypto-js";
 import DatabaseApi from "../../shared/DatabaseApi";
-import { Loading, MessageModal, Slider } from "../../shared/components";
+import { AlternativeLoading, Loading, MessageModal, Slider } from "../../shared/components";
 import { styled } from "styled-components";
 
 const Container = styled.div`
@@ -84,6 +84,7 @@ export const AnimeHome = () => {
   const [featured, setFeatured] = useState();
   const [favorites, setFavorites] = useState();
   const [showModal, setShowModal] = useState();
+  const [showAlternativeLoading, setShowAlternativeLoading] = useState(false);
   let loggedUser = localStorage.getItem("@animatrix/profile");
   loggedUser = JSON.parse(loggedUser) || undefined;
   const memoFeatured = useMemo(() => featured, [featured]);
@@ -163,6 +164,9 @@ export const AnimeHome = () => {
               handleStateOfModal={setShowModal}
             />
           )}
+          {showAlternativeLoading && (
+            <AlternativeLoading />
+          )}
           <Featured>
             <BackgroundImage
               src={memoFeatured?.attributes?.posterImage.original}
@@ -190,6 +194,7 @@ export const AnimeHome = () => {
                     databaseRequest={favorites}
                     showModal={showModal}
                     setShowModal={setShowModal}
+                    setShowAlternativeLoading={setShowAlternativeLoading}
                   />
                 </li>
               ))}

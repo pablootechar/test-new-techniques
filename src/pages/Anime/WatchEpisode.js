@@ -67,6 +67,7 @@ export const WatchEpisode = () => {
   const [userIsPremium, setUserIsPremium] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [error, setError] = useState();
+  const [errorMessage, setErrorMessage] = useState("");
   const userInfos = localStorage.getItem("@animatrix/profile") || undefined;
   const playerRef = useRef();
 
@@ -165,7 +166,8 @@ export const WatchEpisode = () => {
         {showModal && (
           <MessageModal
             typeMessage="error"
-            textMessage="You need to login to post a comment!"
+            // textMessage="You need to login to post a comment!"
+            textMessage={errorMessage}
             modalState={showModal}
             handleStateOfModal={setShowModal}
           />
@@ -225,6 +227,7 @@ export const WatchEpisode = () => {
             onCommentSent={handleSubmit}
             showModal={showModal}
             setShowModal={setShowModal}
+            setErrorMessage={setErrorMessage}
           />
           {typeof allComments !== "undefined" ? (
             allComments.map((comment) => {

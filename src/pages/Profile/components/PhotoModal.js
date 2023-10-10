@@ -70,11 +70,16 @@ const ListItem = styled.li`
   }
 `;
 
+let i = 0;
+
+const aleatoryNumberGenerator = (max, min) => {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+};
+
 const LoadPhotos = ({ info, setValueToIsOpen }) => {
-  const loggedUser = JSON.parse(localStorage.getItem("@animatrix/profile"));
 
   const setNewPhoto = async (photo_id) => {
-    await DatabaseApi.setNewUserPhoto(loggedUser?.id, photo_id);
+    localStorage.setItem("@animatrix/new-photo-id", photo_id);
     window.location.reload();
     localStorage.setItem("@animatrix/recent-update-photo", true);
     setValueToIsOpen(false);
@@ -85,9 +90,10 @@ const LoadPhotos = ({ info, setValueToIsOpen }) => {
       <ListOfCategoryTitle>{info.nameRow}</ListOfCategoryTitle>
       <ListOfCategory>
         {info.photos.map((photo) => {
+          i++;
           return (
             <ListItem
-              key={photo.idphotos}
+              key={`${photo.photoUrl}_${aleatoryNumberGenerator(i, i * 100)}`}
               onClick={() => setNewPhoto(photo.idphotos)}
             >
               <img
@@ -136,7 +142,7 @@ export const ModalPhoto = ({ isOpen, setOpen }) => {
           <h1>Chose you photo</h1>
           {typeof rows !== "undefined" ? (
             rows.map((row) => {
-              return <LoadPhotos info={row} setValueToIsOpen={setOpen} />;
+              return <LoadPhotos key={`${row.nameRow}_${aleatoryNumberGenerator(i, i * 100)}`} info={row} setValueToIsOpen={setOpen} />;
             })
           ) : (
             <Loading />

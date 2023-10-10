@@ -131,6 +131,11 @@ const FavoritesDiv = styled.div`
   flex-direction: column;
   overflow-y: auto;
   padding-top: 5vh;
+
+  & > h3 {
+    font-size: 25px;
+    margin: 2vh 4.5%;
+  }
 `;
 
 const Favorites = styled.div`
@@ -170,29 +175,35 @@ export function Profile() {
   const [favorites, setFavorites] = useState();
   const [showModal, setShowModal] = useState(false);
   const [showReturnUpdatePhoto, setShowReturnUpdatePhoto] = useState(false);
-  const loggedUser = JSON.parse(localStorage.getItem("@animatrix/profile")) || undefined;
-  const updatedPhoto = localStorage.getItem("@animatrix/recent-update-photo") || undefined;
+  const [handledFavorites, setHandledFavorites] = useState(0);
+  const loggedUser =
+    JSON.parse(localStorage.getItem("@animatrix/profile")) || undefined;
+  const updatedPhoto =
+    localStorage.getItem("@animatrix/recent-update-photo") || undefined;
   let i = 0;
   let showModalUpdatedPhoto = 0;
 
+  async function setEssentialInfo() {
+    const email = SHA512(loggedUser?.email).toString();
+    let infoUser = await DatabaseApi.isLogged(email);
+    let imageUrl = await DatabaseApi.getImageUrl(infoUser?.photoId);
+    let favoritesUser = await DatabaseApi.getFavorites(infoUser?.id);
+    setUserInfo(infoUser);
+    setUserPhoto(imageUrl);
+    setFavorites(favoritesUser);
+  }
+
   useEffect(() => {
-    async function setEssentialInfo() {
-      const email = SHA512(loggedUser?.email).toString();
-      let infoUser = await DatabaseApi.isLogged(email);
-      let imageUrl = await DatabaseApi.getImageUrl(infoUser?.photoId);
-      let favoritesUser = await DatabaseApi.getFavorites(infoUser?.id);
-      setUserInfo(infoUser);
-      setUserPhoto(imageUrl);
-      setFavorites(favoritesUser);
+    async function fetchData() {
+      if (updatedPhoto && showModalUpdatedPhoto === 0) {
+        setShowReturnUpdatePhoto(true);
+      }
+
+      await setEssentialInfo();
     }
 
-    if (updatedPhoto && showModalUpdatedPhoto === 0) {
-      
-      setShowReturnUpdatePhoto(!showReturnUpdatePhoto);
-    }
-
-    setEssentialInfo();
-  }, [favorites]);
+    fetchData();
+  }, [handledFavorites]);
 
   const aleatoryNumberGenerator = (max, min) => {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -200,32 +211,27 @@ export function Profile() {
 
   return (
     <Container>
-      {showModal && (
-        <ModalPhoto isOpen={showModal} setOpen={setShowModal} />
-      )}
+      {showModal && <ModalPhoto isOpen={showModal} setOpen={setShowModal} />}
 
       {typeof loggedUser !== "undefined" ? (
         <>
           {typeof userInfo !== "undefined" ? (
             <Content>
-              {showReturnUpdatePhoto && (
-                showModalUpdatedPhoto = 10,
-                <MessageModal
-                  typeMessage="success"
-                  textMessage="Your profile photo has been changed successfully!"
-                  modalState={showReturnUpdatePhoto}
-                  handleStateOfModal={setShowReturnUpdatePhoto}
-                />
-              )}
+              {showReturnUpdatePhoto &&
+                ((showModalUpdatedPhoto = 10),
+                (
+                  <MessageModal
+                    typeMessage="success"
+                    textMessage="Your profile photo has been changed successfully!"
+                    modalState={showReturnUpdatePhoto}
+                    handleStateOfModal={setShowReturnUpdatePhoto}
+                  />
+                ))}
               <UserInfo>
                 <DivUserPhoto>
-                  <EditButton onClick={() => setShowModal(!showModal)}>
-                    <i className="fa-solid fa-pen"></i>
-                  </EditButton>
                   <img
                     src={userPhoto}
                     alt=""
-                    onClick={() => setShowModal(!showModal)}
                   />
                 </DivUserPhoto>
                 <div>
@@ -240,6 +246,7 @@ export function Profile() {
                   <Info>
                     <InfoTitleLine>Password:</InfoTitleLine>
                     <input
+                      name="password-input"
                       value={loggedUser?.password}
                       type="password"
                       disabled
@@ -284,6 +291,9 @@ export function Profile() {
                               listInfo={favorite}
                               databaseRequest={favorites}
                               aniId={favorite?.anime_id}
+                              handleChange={handledFavorites}
+                              setHandleChange={setHandledFavorites}
+                              page="profile"
                             />
                             <AnimeOrMangaCard
                               imgUrl={favorite?.photo}

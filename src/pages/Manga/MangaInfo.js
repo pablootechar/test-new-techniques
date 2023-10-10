@@ -78,33 +78,33 @@ const ButtonSeeAllEpisodes = styled.button`
 `;
 
 export const MangaInfo = () => {
-    const [allChapters, setAllChapters] = useState();
-    const [mangaInfo, setMangaInfo] = useState();
-    const { id, name } = useParams();
+  const [allChapters, setAllChapters] = useState();
+  const [mangaInfo, setMangaInfo] = useState();
+  const { id, name } = useParams();
   const [showFullSynopsis, setShowFUllSynopsis] = useState(true);
   let i = 0;
 
   const chapter = [
     {
       id: 1,
-      chapterNumber: 0
+      chapterNumber: 0,
     },
     {
       id: 2,
-      chapterNumber: 1
+      chapterNumber: 1,
     },
     {
       id: 3,
-      chapterNumber: 2
+      chapterNumber: 2,
     },
-  ]
+  ];
 
   useEffect(() => {
     setAllChapters(chapter);
 
     async function request() {
       const info = await Api.getInfoOfMangaByKitsu(id);
-      setMangaInfo(info.data)
+      setMangaInfo(info.data);
     }
 
     request();
@@ -113,7 +113,7 @@ export const MangaInfo = () => {
   function replaceText(synopsis) {
     const replacedText = synopsis?.substring(0, 300);
     return replacedText?.length >= 300 ? replacedText + "..." : replacedText;
-  };
+  }
 
   const aleatoryNumberGenerator = (max, min) => {
     return Math.floor(Math.random() * (max - min + 1)) + min;

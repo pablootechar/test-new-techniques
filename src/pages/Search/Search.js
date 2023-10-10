@@ -4,7 +4,6 @@ import { Loading } from "../../shared/components";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-// Custom hook for fetching data
 const useFetch = (query) => {
   const [data, setData] = useState();
   const [loading, setLoading] = useState(false);
@@ -28,7 +27,6 @@ const useFetch = (query) => {
   return { data, loading, error };
 };
 
-// Custom component for rendering each item
 const SearchCard = styled.div`
   display: flex;
   justify-content: center;
@@ -87,9 +85,7 @@ const Grid = styled.div`
 
 export const SearchPage = () => {
   const patternTextSearch = localStorage.getItem("@animatrix/text_search");
-
   const navigate = useNavigate();
-
   const { data: dataToBeRendering, loading } = useFetch(patternTextSearch);
 
   const redirectPage = async (animeId, animeName, animeShowType) => {
@@ -134,7 +130,6 @@ export const SearchPage = () => {
           <Loading />
         ) : Array.isArray(dataToBeRendering) ? (
           dataToBeRendering.map((infoCard) => (
-            // Use the custom component for rendering each item
             <ResultItem
               key={infoCard.id}
               infoCard={infoCard}

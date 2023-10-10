@@ -100,14 +100,10 @@ class Api {
       const response = await axios(query);
       return response.data;
     } catch (error) {
-      // Trate o erro aqui
       return "Unable to get link"
-      // console.error('Ocorreu um erro ao obter a URL de streaming:', error);
-      // throw new Error('Erro ao obter a URL de streaming.');
     }
   }
   
- 
   async search(text, limit = 10, offset = 0) {
     if (!text) {
       return

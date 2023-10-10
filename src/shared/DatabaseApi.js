@@ -124,7 +124,6 @@ class DatabaseApi {
     query += `/${id}/${id_anime_api}`
   }
 
-  
   async getPages(manga_id, chapter) {
     let query = `/getPages`;
     query += `/${manga_id}/${chapter}`
@@ -173,21 +172,19 @@ class DatabaseApi {
       });
     } catch (error) {
       console.log(error);
-      throw error; // Re-throw the error to handle it elsewhere if needed
+      throw error;
     }
   }
-
 
   async sendComment(user_id, comment, anime_id, episode) {
     const url = "https://animatrix-api.vercel.app/sendComments";
     var actualDate = new Date();
     var day = actualDate.getDate();
-    var month = actualDate.getMonth() + 1; // Os meses são indexados de 0 a 11
+    var month = actualDate.getMonth() + 1;
     var year = actualDate.getFullYear();
     var formattedDate = `${year}-${month}-${day}`;
     const params = { user_id, comment, anime_id, episode, formattedDate };
 
-    // Formatação de zero à esquerda para dia e mês, se necessário
     if (day < 10) {
       day = '0' + day;
     }
@@ -195,7 +192,6 @@ class DatabaseApi {
     if (month < 10) {
       month = '0' + month;
     }
-
 
     try {
       return await axios.post(url, params).then(response => {});

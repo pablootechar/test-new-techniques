@@ -79,10 +79,13 @@ const replaceTitle = (animeName) => {
   return replacedText;
 };
 
-export const Slider = React.memo(
-  ({ title, animes = undefined, redirectTo = "", databaseRequest, showModal, setShowModal }) => {
-    const navigate = useNavigate();
+export const Slider = React.memo(({ title, animes = undefined, redirectTo = "", databaseRequest, showModal, setShowModal, setShowAlternativeLoading = false }) => {
+
+  const navigate = useNavigate();
+
     const redirectPage = async (allData, animeId, animeName, animeShowType) => {
+      setShowAlternativeLoading(true);
+
       let name = animeName;
       if (animeShowType === "TV") {
         name = `${name} (TV)`;

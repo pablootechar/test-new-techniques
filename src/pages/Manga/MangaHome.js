@@ -84,6 +84,7 @@ export const MangaHome = () => {
   const [featured, setFeatured] = useState();
   const [favorites, setFavorites] = useState();
   const [showModal, setShowModal] = useState();
+  const [showAlternativeLoading, setShowAlternativeLoading] = useState(false);
   let loggedUser = localStorage.getItem("@animatrix/profile");
   loggedUser = JSON.parse(loggedUser) || undefined;
   const memoFeatured = useMemo(() => featured, [featured]);
@@ -186,6 +187,7 @@ export const MangaHome = () => {
                     databaseRequest={favorites}
                     showModal={showModal}
                     setShowModal={setShowModal}
+                    setShowAlternativeLoading={setShowAlternativeLoading}
                   />
                 </li>
               ))}
