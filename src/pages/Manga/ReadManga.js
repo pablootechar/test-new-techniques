@@ -32,12 +32,10 @@ export const ReadChapterOfManga = () => {
 
     const standard = new RegExp(replacementPattern, 'i');
     let urlReplaced = url.replace(standard, replacement);
-    
+
     let urlConvertedToJpg = urlReplaced.replace(".avif", "");
     return urlConvertedToJpg;
   }
-  
-  
 
   return (
     <MangaReadScreen>

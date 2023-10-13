@@ -5,6 +5,7 @@ import { SHA512 } from "crypto-js";
 import { Link } from "react-router-dom";
 import { styled } from "styled-components";
 import { shade } from "polished";
+import { AlternativeLoading, MessageModal } from "../../shared/components";
 
 const SlideTab = styled.div`
   position: absolute;
@@ -68,11 +69,16 @@ const FormButton = styled.button`
   font-size: 22px;
   color: #f5f5f5;
   border: none;
+  margin-top: 10px;
 `;
 
 export default function Login() {
   const [values, setValues] = useState();
   const [userErrorInfos, setUserErrorInfos] = useState(false);
+  const [showErrorLogin, setShowErrorLogin] = useState(false);
+  const [showErrorSignIn, setShowErrorSignIn] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [showAlternativeLoading, setShowAlternativeLoading] = useState();
   const loginPasswordInputRef = useRef();
 
   const cancelRefresh = (e) => {
@@ -101,7 +107,6 @@ export default function Login() {
 
   const EnterKeyPress = (key, event) => {
     if (key === "Enter") {
-
       return loginClick();
     }
   };
@@ -109,11 +114,15 @@ export default function Login() {
   function checkUser(data) {
     const email = SHA512(data?.email).toString();
     const password = SHA512(data?.senha).toString();
-
+    setShowAlternativeLoading(true);
+    
     if (data.email !== "" && data.senha !== "") {
-      axios
-        .get(`https://animatrix-api.vercel.app/login/${email}`)
-        .then((response) => {
+      axios.get(`https://animatrix-api.vercel.app/login/${email}`).then((response) => {
+          if (response.data.length === 0) {
+            setShowAlternativeLoading(false);
+            setErrorMessage("Email not found!")
+            setShowErrorLogin(true);
+          }
           response.data.map((info) => {
             if (info.email === email && info.password === password) {
               localStorage.setItem(
@@ -122,13 +131,15 @@ export default function Login() {
                   id: info?.id,
                   email: data?.email,
                   password: data?.senha,
-                  premium: info?.isPremium === 1 ? true : false
+                  premium: info?.isPremium === 1 ? true : false,
                 })
               );
               localStorage.setItem("@animatrix/current-page", "/home");
               window.location.href = "/home";
             } else {
-              setErrorInfos(true);
+              setShowAlternativeLoading(false);
+              setErrorMessage("Incorrect password!")
+              setShowErrorLogin(true);
             }
           });
         });
@@ -136,7 +147,15 @@ export default function Login() {
   }
 
   function loginClick() {
-    checkUser(values);
+    let emailIsFilled = values?.email ? true : false;
+    let passwordIsFilled = values?.senha ? true : false;
+
+    if (emailIsFilled && passwordIsFilled) {
+      return checkUser(values);
+    }
+
+    setErrorMessage("Fill in all the fields please!");
+    setShowErrorLogin(true);
   }
 
   const handelChangeLogin = (value) => {
@@ -155,17 +174,67 @@ export default function Login() {
 
   const sendRegister = () => {
     const email = SHA512(values?.email).toString();
-    const password = SHA512(values?.senha).toString();
+    const unencryptedPassword = values?.senha;
+    const confirmPassword = values?.confirmaSenha;
+    const encryptedPassword = SHA512(values?.senha).toString();
+    // aqui eu faço a troca dos espaços por nada pra ver se o usuario ta tentando me enganar
+    const replacedName = values?.nome?.replace(" ", "");
+    const replacedEmail = values?.email?.replace(" ", "");
+    const replacedPassword = values?.senha?.replace(" ", "");
+    const replacedConfirmPassword = values?.confirmaSenha?.replace(" ", "");
+    // aki eu vejo se o valor retornado vai ser indefinido (pq se o usuário não preencher tudo ele vai retornar indefinido em alguns campos)
+    const nameIsUndefined = typeof replacedName !== "undefined" ? true : false;
+    const emailIsUndefined = typeof replacedEmail !== "undefined" ? true : false;
+    const passwordIsUndefined = typeof replacedPassword !== "undefined" ? true : false;
+    const confirmPasswordIsUndefined = typeof replacedConfirmPassword !== "undefined" ? true : false;
+    // se ele for diferente de indefinido, eu checo pra ver se ele está vazio, se não estiver ele vai dar continuidade ao código, senão erro
+    const nameIsChecked = nameIsUndefined ? (replacedName !== "" ? true : false) : false;
+    const emailIsChecked = emailIsUndefined ? (replacedName !== "" ? true : false) : false;
+    const passwordIsChecked = passwordIsUndefined ? (replacedName !== "" ? true : false) : false;
+    const confirmPasswordIsChecked = confirmPasswordIsUndefined ? (replacedName !== "" ? true : false) : false;
 
-    axios
-      .get(`https://animatrix-api.vercel.app/login/${email}`)
-      .then((response) => {
+
+    if (nameIsChecked && emailIsChecked && passwordIsChecked && confirmPasswordIsChecked) {
+      if (unencryptedPassword === confirmPassword) {
+        setShowAlternativeLoading(true);
+        return axios.get(`https://animatrix-api.vercel.app/login/${email}`).then((response) => {
+          if (response.data.length === 0) {
+            axios.post("https://animatrix-api.vercel.app/insertuser", {
+                name: values.nome,
+                email: email,
+                password: encryptedPassword,
+                photoId: 1,
+                isPremium: 0,
+                isAdmin: 0,
+              })
+              .then((response) => {
+                console.log(response);
+              });
+            window.location.href = "/profile/login";
+          } else {
+            setShowAlternativeLoading(false);
+            setErrorMessage("This email already exists!");
+            setShowErrorSignIn(true);
+          }
+        });
+      }
+      
+      setErrorMessage("Passwords do not match!")
+      setShowErrorSignIn(true);
+    } else {
+      setShowErrorSignIn(true);
+      return setErrorMessage("Fill in all the fields please!");
+    }
+
+
+    if (unencryptedPassword === confirmPassword) {
+      setShowAlternativeLoading(true);
+      return axios.get(`https://animatrix-api.vercel.app/login/${email}`).then((response) => {
         if (response.data.length === 0) {
-          axios
-            .post("https://animatrix-api.vercel.app/insertuser", {
+          axios.post("https://animatrix-api.vercel.app/insertuser", {
               name: values.nome,
               email: email,
-              password: password,
+              password: encryptedPassword,
               photoId: 1,
               isPremium: 0,
               isAdmin: 0,
@@ -175,9 +244,16 @@ export default function Login() {
             });
           window.location.href = "/profile/login";
         } else {
-          alert("Esse email já existe");
+          setShowAlternativeLoading(false);
+          setErrorMessage("This email already exists!")
+          setShowErrorSignIn(true);
         }
       });
+    }
+    
+    setErrorMessage("Passwords do not match!")
+    setShowErrorSignIn(true);
+
   };
 
   function handleUrl(nova) {
@@ -186,6 +262,23 @@ export default function Login() {
 
   return (
     <div className="wrapper-pai">
+      {showAlternativeLoading && <AlternativeLoading />}
+      {showErrorLogin && (
+        <MessageModal
+          typeMessage="error"
+          textMessage={errorMessage}
+          modalState={showErrorLogin}
+          handleStateOfModal={setShowErrorLogin}
+        />
+      )}
+      {showErrorSignIn && (
+        <MessageModal
+          typeMessage="error"
+          textMessage={errorMessage}
+          modalState={showErrorSignIn}
+          handleStateOfModal={setShowErrorSignIn}
+        />
+      )}
       <img
         src="https://cdnb.artstation.com/p/assets/images/images/052/004/767/original/yurii-ray-06-gif-export-200.gif?1658731969"
         alt=""
@@ -268,7 +361,6 @@ export default function Login() {
                   name="nome"
                   onChange={handleChange}
                   tabIndex={-1}
-                  required
                 />
               </div>
               <div className="field">
@@ -278,7 +370,6 @@ export default function Login() {
                   name="email"
                   onChange={handleChange}
                   tabIndex={-1}
-                  required
                 />
               </div>
               <div className="field">
@@ -288,16 +379,15 @@ export default function Login() {
                   name="senha"
                   onChange={handleChange}
                   tabIndex={-1}
-                  required
-                />
+                  />
               </div>
               <div className="field">
                 <InputForm
                   type="password"
                   placeholder="Confirm password"
-                  name="confirm-senha"
+                  name="confirmaSenha"
+                  onChange={handleChange}
                   tabIndex={-1}
-                  required
                 />
               </div>
               <FormButton
