@@ -1,25 +1,7 @@
 import React from "react";
 import styled, { keyframes } from "styled-components";
 
-const bounce1 = keyframes`
-  0%, 20%, 50%, 80%, 100% {
-    transform: translateY(0);
-  }
-  40% {
-    transform: translateY(-10px);
-  }
-`;
-
-const bounce2 = keyframes`
-  0%, 20%, 50%, 80%, 100% {
-    transform: translateY(0);
-  }
-  40% {
-    transform: translateY(-10px);
-  }
-`;
-
-const bounce3 = keyframes`
+const bounceAnimation = keyframes`
   0%, 20%, 50%, 80%, 100% {
     transform: translateY(0);
   }
@@ -65,17 +47,17 @@ const JumpCircle = styled.div`
 `;
 
 const AnimatedJumpCircle1 = styled(JumpCircle)`
-  animation-name: ${bounce1};
+  animation-name: ${bounceAnimation};
 `;
 
 const AnimatedJumpCircle2 = styled(JumpCircle)`
   animation-delay: 0.4s;
-  animation-name: ${bounce2};
+  animation-name: ${bounceAnimation};
 `;
 
 const AnimatedJumpCircle3 = styled(JumpCircle)`
   animation-delay: .6s;
-  animation-name: ${bounce3};
+  animation-name: ${bounceAnimation};
 `;
 
 export const AlternativeLoading = () => {

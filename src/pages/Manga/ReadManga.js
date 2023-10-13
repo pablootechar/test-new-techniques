@@ -9,6 +9,10 @@ const MangaPage = styled.img`
   margin: 1px 5%;
 `;
 
+const MangaReadScreen = styled.div`
+  padding-bottom: 40px;
+`;
+
 export const ReadChapterOfManga = () => {
   const [allPages, setAllPages] = useState();
   const { name: MangaId, chapterNum } = useParams();
@@ -16,22 +20,34 @@ export const ReadChapterOfManga = () => {
   useEffect(() => {
     async function request() {
       const chapter = await DatabaseApi.getPages(MangaId, chapterNum);
-
       setAllPages(chapter);
     }
 
     request();
   }, []);
 
+  function replaceURLSnippet(url) {
+    const replacementPattern = 'avif/[^/]+/'; // Regular expression for "avif/[anything]/"
+    const replacement = 'firefox/';
+
+    const standard = new RegExp(replacementPattern, 'i');
+    let urlReplaced = url.replace(standard, replacement);
+    
+    let urlConvertedToJpg = urlReplaced.replace(".avif", "");
+    return urlConvertedToJpg;
+  }
+  
+  
+
   return (
-    <div>
+    <MangaReadScreen>
       {typeof allPages !== "undefined" ? (
         <ul>
           {allPages.map((page) => {
             return (
               <li key={page.idpag}>
                 <MangaPage
-                  src={page.mangapag}
+                  src={replaceURLSnippet(page.mangapag)}
                   alt={`Page ${page.idpag} of ${MangaId}`}
                 />
               </li>
@@ -41,6 +57,6 @@ export const ReadChapterOfManga = () => {
       ) : (
         <Loading />
       )}
-    </div>
+    </MangaReadScreen>
   );
 };

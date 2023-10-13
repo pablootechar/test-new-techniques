@@ -41,11 +41,7 @@ const DescriptionSynopsis = styled.p`
   cursor: pointer;
 `;
 
-export const AnimeOrMangaCard = ({
-  imgUrl,
-  title,
-  description = "",
-}) => {
+export const AnimeOrMangaCard = ({ imgUrl, title, description = "" }) => {
 
   return (
       <Card>

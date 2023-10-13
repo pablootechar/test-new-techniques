@@ -44,7 +44,9 @@ export const SendComment = ({ onCommentSent, showModal, setShowModal, setErrorMe
 
   const sendComment = async () => {
     const inputText = document.getElementById("input-comment");
-    if (inputText) {
+    const inputValueWithoutSpaceInText = inputText?.value.replace(/\s/g, "");
+
+    if (inputValueWithoutSpaceInText.length === 0) {
       setErrorMessage("The comment cannot be empty");
       return setShowModal(!showModal);
     }

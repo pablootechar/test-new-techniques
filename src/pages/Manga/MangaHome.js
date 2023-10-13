@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import Api from "../../shared/Api";
 import { SHA512 } from "crypto-js";
 import DatabaseApi from "../../shared/DatabaseApi";
-import { Loading, MessageModal, Slider } from "../../shared/components";
+import { AlternativeLoading, Loading, MessageModal, Slider } from "../../shared/components";
 import { styled } from "styled-components";
 
 const Container = styled.div`
@@ -97,14 +97,17 @@ export const MangaHome = () => {
 
     const featuredItem = trending[Math.floor(Math.random() * trending.length)];
     const rows = [
-        { title: "Upcoming", mangas: await Api.getUpcoming() },
-        { title: "Shonen", mangas: await Api.getMangaByCategory("shounen") },
-        { title: "Isekai", mangas: await Api.getMangaByCategory("isekai") },
-        { title: "Seinen", mangas: await Api.getMangaByCategory("seinen") },
-        { title: "Mecha", mangas: await Api.getMangaByCategory("mecha") },
-        { title: "Shoujo", mangas: await Api.getMangaByCategory("shoujo") },
-        { title: "Josei", mangas: await Api.getMangaByCategory("josei") },
-        { title: "Slice of Life", mangas: await Api.getMangaByCategory("slice-of-life") },
+      { title: "Upcoming", mangas: await Api.getUpcoming() },
+      { title: "Shonen", mangas: await Api.getMangaByCategory("shounen") },
+      { title: "Isekai", mangas: await Api.getMangaByCategory("isekai") },
+      { title: "Seinen", mangas: await Api.getMangaByCategory("seinen") },
+      { title: "Mecha", mangas: await Api.getMangaByCategory("mecha") },
+      { title: "Shoujo", mangas: await Api.getMangaByCategory("shoujo") },
+      { title: "Josei", mangas: await Api.getMangaByCategory("josei") },
+      {
+        title: "Slice of Life",
+        mangas: await Api.getMangaByCategory("slice-of-life"),
+      },
     ];
 
     localStorage.setItem(
@@ -149,53 +152,54 @@ export const MangaHome = () => {
     }
   }
 
-  return (
-      typeof favorites !== "undefined" ? (
-        <Container>
-          {showModal && (
-            <MessageModal 
-              typeMessage="error"
-              textMessage="You need to login to add an anime to favorites!"
-              modalState={showModal}
-              handleStateOfModal={setShowModal}
-            />
-          )}
-          <Featured>
-            <BackgroundImage
-              src={memoFeatured?.attributes?.posterImage.original}
-              alt={memoFeatured?.attributes?.canonicalTitle}
-            />
-            <FeaturedDescription>
-              <Title>
-                {replaceText(memoFeatured?.attributes?.canonicalTitle, "title")}
-              </Title>
-              <Synopsis>
-                {replaceText(memoFeatured?.attributes?.synopsis, "synopsis")}
-              </Synopsis>
-            </FeaturedDescription>
-            <Vignette />
-          </Featured>
+  return typeof favorites !== "undefined" ? (
+    <Container>
+      {showModal && (
+        <MessageModal
+          typeMessage="error"
+          textMessage="You need to login to add an anime to favorites!"
+          modalState={showModal}
+          handleStateOfModal={setShowModal}
+        />
+      )}
+      {showAlternativeLoading && 
+        <AlternativeLoading />
+      }
+      <Featured>
+        <BackgroundImage
+          src={memoFeatured?.attributes?.posterImage.original}
+          alt={memoFeatured?.attributes?.canonicalTitle}
+        />
+        <FeaturedDescription>
+          <Title>
+            {replaceText(memoFeatured?.attributes?.canonicalTitle, "title")}
+          </Title>
+          <Synopsis>
+            {replaceText(memoFeatured?.attributes?.synopsis, "synopsis")}
+          </Synopsis>
+        </FeaturedDescription>
+        <Vignette />
+      </Featured>
 
-          <AnimeList>
-            <ul>
-              {rows.map((row, key) => (
-                <li key={key}>
-                  <Slider
-                    title={row.title}
-                    animes={row.mangas}
-                    redirectTo="manga"
-                    databaseRequest={favorites}
-                    showModal={showModal}
-                    setShowModal={setShowModal}
-                    setShowAlternativeLoading={setShowAlternativeLoading}
-                  />
-                </li>
-              ))}
-            </ul>
-          </AnimeList>
-        </Container>
-      ) : (
-        <Loading />
-      )
+      <AnimeList>
+        <ul>
+          {rows.map((row, key) => (
+            <li key={key}>
+              <Slider
+                title={row.title}
+                animes={row.mangas}
+                redirectTo="manga"
+                databaseRequest={favorites}
+                showModal={showModal}
+                setShowModal={setShowModal}
+                setShowAlternativeLoading={setShowAlternativeLoading}
+              />
+            </li>
+          ))}
+        </ul>
+      </AnimeList>
+    </Container>
+  ) : (
+    <Loading />
   );
 };
