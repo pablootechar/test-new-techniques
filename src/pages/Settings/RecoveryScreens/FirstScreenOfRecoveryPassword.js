@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import DatabaseApi from "../../../shared/DatabaseApi";
 import emailjs from '@emailjs/browser';
 import { SHA512 } from "crypto-js";
+import { RecoveryButton, RecoveryForm, RecoveryInput } from "../components";
 
 export const FirstScreenOfRecoveryPassword = () => {
   const [userInfo, setUserInfo] = useState();
@@ -108,13 +109,10 @@ export const FirstScreenOfRecoveryPassword = () => {
   }
 
   return (
-    <form onSubmit={setEssentialInfo}>
-      <div>
+    <RecoveryForm onSubmit={setEssentialInfo}>
         <h1>Recovery password</h1>
-      </div>
-      <div>
         <div>
-          <input
+          <RecoveryInput
             className={error !== "" ? "input-error" : "input"}
             name="email"
             id="email"
@@ -122,13 +120,11 @@ export const FirstScreenOfRecoveryPassword = () => {
             placeholder="Email:"
             onChange={(e) => setEmailValue(e)}
             value={values.email}
+            autoComplete="off"
           />
           {error !== "" && <span className="label error">{error}</span>}
         </div>
-        <div onClick={(e) => sendEmail(e)}>
-          <input type="submit" value="Recovery" />
-        </div>
-      </div>
-    </form>
+        <RecoveryButton type="submit" onClick={(e) => sendEmail(e)}>Recovery</RecoveryButton>
+    </RecoveryForm>
   );
 };

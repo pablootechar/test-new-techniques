@@ -93,7 +93,6 @@ const Info = styled.div`
     border: 1px solid ${({ theme }) => theme.representativeColor};
     border-radius: 5px;
     padding: 1px 3px;
-    /* pointer-events: none; */
     background: black;
   }
 
@@ -170,7 +169,7 @@ const EditButton = styled.button`
 const InputGroup = styled.div`
   display: flex;
   flex-direction: column;
-  padding-left: 25%;
+  padding-left: 29%;
 
   & > input {
     background: transparent;

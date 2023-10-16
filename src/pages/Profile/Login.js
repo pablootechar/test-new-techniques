@@ -331,7 +331,7 @@ export default function Login() {
                   <span>Invalid username or password</span>
                 </div>
               )}
-              <Link to="/settings/recovery-password/">
+              <Link to="/settings/recovery-password/send-email">
                 <ForgotPasswordLink>
                   <p>Forgot your password?</p>
                 </ForgotPasswordLink>
