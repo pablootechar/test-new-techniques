@@ -43,7 +43,7 @@ class DatabaseApi {
     let query = "/recoveryPassword";
     query += `?email=${email}&code=${code}`;
 
-    return await axios.get(query).then((response) => {
+    return await this.database.get(query).then((response) => {
       return response?.data[0]
     })
   }

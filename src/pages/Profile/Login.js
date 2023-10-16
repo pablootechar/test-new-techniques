@@ -97,14 +97,6 @@ export default function Login() {
     loginForm.style.marginLeft = "0%";
   }
 
-  function setErrorInfos() {
-    setUserErrorInfos(true);
-    const inputEmail = document.querySelector("#login-input-email");
-    const inputPass = document.querySelector("#login-input-pass");
-    inputEmail.style.border = "2px solid #ff0000";
-    inputPass.style.border = "2px solid #ff0000";
-  }
-
   const EnterKeyPress = (key, event) => {
     if (key === "Enter") {
       return loginClick();

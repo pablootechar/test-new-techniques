@@ -5,7 +5,7 @@ import { NavigationBar, Search } from "./shared/components";
 import { useState } from "react";
 import { BrowserRouter, Routes as Switch, Route } from "react-router-dom";
 import { darkCrimson, darkCyan, darkGreen, darkNavyBlue, darkOrange, darkPink, darkPurple, darkRed, darkSkyBlue, darkYellow } from "./styles";
-import { AdminPage, AnimeHome, AnimeInfo, ErrorPage, Home, MangaHome, MangaInfo, Profile, ReadChapterOfManga, SearchPage, Settings, SettingsEditProfile, ViewAllEpisodes, WatchEpisode } from "./pages";
+import { AdminPage, AnimeHome, AnimeInfo, ErrorPage, Home, MangaHome, MangaInfo, Profile, ReadChapterOfManga, RecoveryPassword, SearchPage, Settings, SettingsEditProfile, ViewAllEpisodes, WatchEpisode } from "./pages";
 import Login from "./pages/Profile/Login";
 import { RedirectToHomePage } from "./Redirect";
 
@@ -89,6 +89,7 @@ function App() {
           <Route path="/profile/login" element={<Login />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/settings/edit-profile" element={<SettingsEditProfile />} />
+          <Route path="/settings/recovery-password/:page" element={<RecoveryPassword />} />
         </Switch>
       </BrowserRouter>
     </ThemeProvider>
