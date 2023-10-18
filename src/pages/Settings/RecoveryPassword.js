@@ -38,13 +38,13 @@ export const RecoveryPassword = () => {
     if (page === "send-email") {
         return renderScreenWithImage(FirstScreenOfRecoveryPassword)
     } else if (page === "click-the-ok-button-to-proceed") {
-        return <SecondScreenOfRecoveryPassword />
+        return renderScreenWithImage(SecondScreenOfRecoveryPassword)
     } else if (page === "enter-verification-code") {
-        return <ThirdScreenOfRecoveryPassword />
+        return renderScreenWithImage(ThirdScreenOfRecoveryPassword)
     } else if (page === "enter-new-password") {
-        return <FourthScreenOfRecoveryPassword />
+        return renderScreenWithImage(FourthScreenOfRecoveryPassword)
     } else if (page === "click-the-ok-button-to-return") {
-        return <FifthScreenOfRecoveryPassword />
+        return renderScreenWithImage(FifthScreenOfRecoveryPassword)
     } else {
         return (
             <div>oxi paizãokkkkk</div>

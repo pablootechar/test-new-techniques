@@ -48,6 +48,20 @@ class DatabaseApi {
     })
   }
 
+  async deleteRecoveryCodeByEmail(email) {
+    try {
+      let endpoint = "/deleteRecoveryCode";
+      endpoint += `/${email}`;
+
+      const response = await this.database.delete(endpoint);
+
+      return response;
+    } catch (error) {
+      console.error("Erro ao excluir códigos de recuperação:", error);
+      throw new Error("Falha ao excluir códigos de recuperação.");
+    }
+  }
+
   async adminEditUser(id, isPremium, isAdmin) {
     const query = '/admin/setNewDataOfUser';
     const params = { id, isPremium, isAdmin };

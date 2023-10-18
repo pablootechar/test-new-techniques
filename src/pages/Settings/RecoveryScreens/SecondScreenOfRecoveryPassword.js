@@ -1,4 +1,10 @@
 import { useRef } from "react";
+import styled from "styled-components";
+
+const CircleChecked = styled.img`
+    width: 30px;
+    height: 30px;
+`;
 
 
 export const SecondScreenOfRecoveryPassword = () => {
@@ -22,7 +28,7 @@ export const SecondScreenOfRecoveryPassword = () => {
                 <svg width="80" height="100" viewBox="-50 -50 100 100">
                     <circle className="loader" id="loader" cx="0" cy="0" r="45" ref={circleRef} />
                 </svg>
-                <img
+                <CircleChecked
                     src="https://cdn-icons-png.flaticon.com/512/5610/5610944.png"
                     className="check"
                     id="check"
