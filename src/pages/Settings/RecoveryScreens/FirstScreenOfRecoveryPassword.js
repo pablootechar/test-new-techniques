@@ -55,7 +55,7 @@ export const FirstScreenOfRecoveryPassword = () => {
 
   async function sendEmail(e) {
     e?.preventDefault();
-    
+
     if (!clicked) {
       return;
     }
@@ -71,18 +71,21 @@ export const FirstScreenOfRecoveryPassword = () => {
 
     setTimeout(async () => {
       if (typeof userInfo !== "undefined") {
-        if (userInfo !== "No email was found" && userInfo?.name !== "Default" && userInfo?.email === email) {
-  
+        if (
+          userInfo !== "No email was found" &&
+          userInfo?.name !== "Default" &&
+          userInfo?.email === email
+        ) {
           await DatabaseApi.deleteRecoveryCodeByEmail(email);
-  
+
           await DatabaseApi.insertRecoveryCode(email, key);
-  
+
           const templateParams = {
             from_name: userInfo?.name,
             message: key,
             email: values?.email,
           };
-  
+
           emailjs
             .send(
               "service_qordmib",
@@ -92,12 +95,13 @@ export const FirstScreenOfRecoveryPassword = () => {
             )
             .then(
               (response) => {
-                if(sendOneEmail ===0) {
+                if (sendOneEmail === 0) {
                   localStorage.setItem("@animatrix/recovery/email", email);
                   setUserInfo(undefined);
                   setError("");
-                  window.location.href = "/settings/recovery-password/click-the-ok-button-to-proceed";
-                  setSendOneEmail(1)
+                  window.location.href =
+                    "/settings/recovery-password/click-the-ok-button-to-proceed";
+                  setSendOneEmail(1);
                 }
               },
               (err) => {
@@ -112,7 +116,6 @@ export const FirstScreenOfRecoveryPassword = () => {
         }
       }
     }, 3000);
-
   }
 
   useEffect(() => {
@@ -122,9 +125,7 @@ export const FirstScreenOfRecoveryPassword = () => {
   return (
     <RecoveryForm onSubmit={setEssentialInfo}>
       {showLoading && <AlternativeLoading />}
-      <div>
-        <h1>Recovery password</h1>
-      </div>
+      <h1>Recovery password</h1>
       <div>
         <div>
           <RecoveryInput
@@ -138,11 +139,14 @@ export const FirstScreenOfRecoveryPassword = () => {
           />
           {error !== "" && <span className="label error">{error}</span>}
         </div>
-        <RecoveryButton onClick={(e) => {
-          setClicked(true);
-          sendEmail(e);
-        }} type="submit" >
-        Recovery
+        <RecoveryButton
+          onClick={(e) => {
+            setClicked(true);
+            sendEmail(e);
+          }}
+          type="submit"
+        >
+          Recovery
         </RecoveryButton>
       </div>
     </RecoveryForm>

@@ -1,6 +1,18 @@
 import { SHA512 } from "crypto-js";
 import { useState } from "react";
 import DatabaseApi from "../../../shared/DatabaseApi"
+import { RecoveryButton, RecoveryForm, RecoveryInput } from "../components";
+import styled from "styled-components";
+
+const FormOfInsertNewPassword = styled(RecoveryForm)`
+  & > h1 {
+    font-size: 32px;
+  }
+`;
+
+const PasswordInput = styled(RecoveryInput)`
+    margin-top: 10px;
+`;
 
 
 export const FourthScreenOfRecoveryPassword = () => {
@@ -39,7 +51,9 @@ export const FourthScreenOfRecoveryPassword = () => {
         }
     }
 
-    const checkAndChangePassword = async () => {
+    const checkAndChangePassword = async (e) => {
+        e.preventDefault();
+
         let pass = recoverPassword?.changePassword?.replace(/ /g, "");
         let confirmPass = recoverPassword?.changePasswordConfirm?.replace(/ /g, "");
         let cryptEmail = localStorage.getItem("@animatrix/recovery/email")
@@ -58,9 +72,9 @@ export const FourthScreenOfRecoveryPassword = () => {
     }
 
     return (
-        <form>
-            <h3>Please enter the 8-digit code.</h3>
-            <input
+        <FormOfInsertNewPassword>
+            <h1>Please enter the new password.</h1>
+            <PasswordInput
                 type="password"
                 name='changePassword'
                 className={error !== '' ? 'change input-error' : 'input-recovery '}
@@ -68,7 +82,7 @@ export const FourthScreenOfRecoveryPassword = () => {
                 onChange={(e) => setInputValues(e)}
                 value={recoverPassword?.changePassword}
             />
-            <input
+            <PasswordInput
                 type="password"
                 name='changePasswordConfirm'
                 className={error !== '' ? 'change input-error' : 'input-recovery '}
@@ -81,9 +95,9 @@ export const FourthScreenOfRecoveryPassword = () => {
                     {error}
                 </span>
             )}
-            <div onClick={() => checkAndChangePassword()}>
+            <RecoveryButton onClick={(e) => checkAndChangePassword(e)}>
                 Confirm
-            </div>
-        </form>
+            </RecoveryButton>
+        </FormOfInsertNewPassword>
     )
 }

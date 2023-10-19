@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import DatabaseApi from "../DatabaseApi";
 import styled from "styled-components";
+import { AlternativeLoading } from "./AlternativeLoading";
 
 const CommentDiv = styled.div`
   bottom: 36px;
@@ -32,8 +33,14 @@ const CommentButton = styled.button`
   color: #f5f5f5;
 `;
 
-export const SendComment = ({ onCommentSent, showModal, setShowModal, setErrorMessage }) => {
+export const SendComment = ({
+  onCommentSent,
+  showModal,
+  setShowModal,
+  setErrorMessage,
+}) => {
   const params = useParams();
+  const [showLoading, setShowLoading] = useState(false);
   const { id: animeId, episodeNum } = params;
   const storageUserInfo = localStorage.getItem("@animatrix/profile");
 
@@ -43,16 +50,19 @@ export const SendComment = ({ onCommentSent, showModal, setShowModal, setErrorMe
   };
 
   const sendComment = async () => {
+    setShowLoading(true);
     const inputText = document.getElementById("input-comment");
     const inputValueWithoutSpaceInText = inputText?.value.replace(/\s/g, "");
 
     if (inputValueWithoutSpaceInText.length === 0) {
+      setShowLoading(false);
       setErrorMessage("The comment cannot be empty");
       return setShowModal(!showModal);
     }
     if (storageUserInfo === null || typeof storageUserInfo === "undefined") {
-      setErrorMessage("You need to login to post a comment!")
-      setShowModal(!showModal);
+      setShowLoading(false);
+      setErrorMessage("You need to login to post a comment!");
+      return setShowModal(!showModal);
     } else {
       const { id: userId } = JSON.parse(storageUserInfo);
       const inputText = document.getElementById("input-comment");
@@ -64,11 +74,13 @@ export const SendComment = ({ onCommentSent, showModal, setShowModal, setErrorMe
       );
       clearInput();
       onCommentSent();
+      setShowLoading(false);
     }
   };
 
   return (
     <CommentDiv>
+      {showLoading && <AlternativeLoading />}
       <CommentInput
         id="input-comment"
         type="text"

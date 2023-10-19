@@ -1,5 +1,13 @@
 import React, { useState } from "react";
 import DatabaseApi from "../../../shared/DatabaseApi";
+import { RecoveryButton, RecoveryForm, RecoveryInput } from "../components";
+import styled from "styled-components";
+
+const FormOfInsertCode = styled(RecoveryForm)`
+  & > h1 {
+    font-size: 32px;
+  }
+`;
 
 export const ThirdScreenOfRecoveryPassword = () => {
   const [error, setError] = useState("");
@@ -27,10 +35,10 @@ export const ThirdScreenOfRecoveryPassword = () => {
   }
 
   return (
-    <form>
-      <h3>Please enter the 8-digit code.</h3>
+    <FormOfInsertCode>
+      <h1>Please enter the 8-digit code.</h1>
       <div>
-        <input
+        <RecoveryInput
           className={error !== "" ? "code error" : "input"}
           maxLength="8"
           value={code}
@@ -38,8 +46,9 @@ export const ThirdScreenOfRecoveryPassword = () => {
         />
         {error !== "" && <span className="label error">{error}</span>}
       </div>
-      <div
-        onClick={() => {
+      <RecoveryButton
+        onClick={(e) => {
+          e.preventDefault();
           if (code?.length === 8) {
             checkCode(code);
             setError("");
@@ -47,7 +56,7 @@ export const ThirdScreenOfRecoveryPassword = () => {
         }}
       >
         Verify
-      </div>
-    </form>
+      </RecoveryButton>
+    </FormOfInsertCode>
   );
 };

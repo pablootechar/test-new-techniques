@@ -7,13 +7,18 @@ export const RecoveryForm = styled.form`
   border: 3px solid ${({ theme }) => theme.representativeColor};
   background: rgba(255, 255, 255, 0.75);
   padding: 20px;
+  color: #2d2d2d;
 
   & > h1 {
-    color: black;
     font-size: 35px;
     font-weight: 500;
     margin-bottom: 20px;
-}
+  }
+
+  & > h5 {
+    font-size: 18px;
+    font-weight: 400;
+  }
 `;
 
 export const RecoveryInput = styled.input`
@@ -25,12 +30,13 @@ export const RecoveryInput = styled.input`
 `;
 
 export const RecoveryButton = styled.button`
-    background: ${({ theme }) => theme.representativeColor};
-    padding: 5px 10px;
-    border-radius: 5px;
-    border: none;
-    color: #f5f5f5;
-    font-size: 16px;
-    font-weight: 500;
-    margin-top: 20px;
+  background: ${({ theme }) => theme.representativeColor};
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: none;
+  color: #f5f5f5;
+  font-size: 16px;
+  font-weight: 500;
+  margin-top: 20px;
 `;
+
