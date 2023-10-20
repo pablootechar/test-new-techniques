@@ -81,7 +81,7 @@ const LoadPhotos = ({ info, setValueToIsOpen }) => {
   const setNewPhoto = async (photo_id) => {
     localStorage.setItem("@animatrix/new-photo-id", photo_id);
     window.location.reload();
-    localStorage.setItem("@animatrix/recent-update-photo", true);
+    // localStorage.setItem("@animatrix/recent-update-photo", true);
     setValueToIsOpen(false);
   };
 

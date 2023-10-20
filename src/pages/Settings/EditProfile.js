@@ -371,7 +371,7 @@ export function SettingsEditProfile() {
         <>
           {typeof userInfo !== "undefined" ? (
             <Content>
-              {showReturnUpdatePhoto &&
+              {/* {showReturnUpdatePhoto &&
                 ((showModalUpdatedPhoto = 10),
                 (
                   <MessageModal
@@ -380,7 +380,7 @@ export function SettingsEditProfile() {
                     modalState={showReturnUpdatePhoto}
                     handleStateOfModal={setShowReturnUpdatePhoto}
                   />
-                ))}
+                ))} */}
               {errorToCloseInputGroup && (
                 <MessageModal
                   typeMessage="error"

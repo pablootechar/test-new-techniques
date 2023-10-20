@@ -59,6 +59,7 @@ export const SendComment = ({
       setErrorMessage("The comment cannot be empty");
       return setShowModal(!showModal);
     }
+    
     if (storageUserInfo === null || typeof storageUserInfo === "undefined") {
       setShowLoading(false);
       setErrorMessage("You need to login to post a comment!");
