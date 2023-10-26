@@ -39,7 +39,7 @@ export const Settings = () => {
       let infoUser = await DatabaseApi.isLogged(
         encryptedEmail || defaultUserEmail
       );
-      localStorage.setItem("@animatrix/user-photoId", infoUser?.photoId)
+      localStorage.setItem("@animatrix/user-photoId", infoUser?.photoId);
       let imageUrl = await DatabaseApi.getImageUrl(infoUser?.photoId);
 
       setUserInfo(infoUser);
@@ -59,6 +59,7 @@ export const Settings = () => {
 
   const logoutClick = () => {
     localStorage.removeItem("@animatrix/profile");
+    localStorage.removeItem("@animatrix/user-premium");
     window.location.reload();
   };
 

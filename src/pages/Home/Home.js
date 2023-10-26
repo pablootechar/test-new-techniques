@@ -6,7 +6,7 @@ import gojo from "./assets/satoru.webp";
 import seshomaru from "./assets/seshomaru.webp";
 import firstSungJinWoo from "./assets/sung_jin_woo.webp";
 import secondSungJinWoo from "./assets/sung_jin_woo2.webp";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { styled } from "styled-components";
 import {
   MainHome,
@@ -15,6 +15,14 @@ import {
   ShopItemPremium,
 } from "./components";
 import { MessageModal } from "../../shared/components";
+import inUseCrimson from "./assets/inuse_images/inuse_crimson.png";
+import inUseCyan from "./assets/inuse_images/inuse_cyan.png";
+import inUseGreen from "./assets/inuse_images/inuse_green.png";
+import inUseNavyBlue from "./assets/inuse_images/inuse_navyblue.png";
+import inUsePink from "./assets/inuse_images/inuse_pink.png";
+import inUsePurple from "./assets/inuse_images/inuse_purple.png";
+import inUseRed from "./assets/inuse_images/inuse_red.png";
+import inUseSkyBlue from "./assets/inuse_images/inuse_skyblue.png";
 
 const DivHomeTitle = styled.div`
   position: absolute;
@@ -102,6 +110,33 @@ const alNum = Math.floor(Math.random() * images.length);
 
 export const Home = () => {
   const [showModal, setShowModal] = useState(false);
+  const [inUseImage, setInUseImage] = useState(inUseSkyBlue)
+
+  const userInfo = JSON.parse(localStorage.getItem("@animatrix/profile"));
+  const currentThemeColor = localStorage.getItem("@animatrix/theme");
+
+  useEffect(() => {
+    if (currentThemeColor === "darkCrimson") {
+      setInUseImage(inUseCrimson);
+    } else if (currentThemeColor === "darkCyan") {
+      setInUseImage(inUseCyan);
+    }  else if (currentThemeColor === "darkGreen") {
+      setInUseImage(inUseGreen);
+    } else if (currentThemeColor === "darkNavyBlue") {
+      setInUseImage(inUseNavyBlue);
+    } else if (currentThemeColor === "darkPink") {
+      setInUseImage(inUsePink);
+    } else if (currentThemeColor === "darkPurple") {
+      setInUseImage(inUsePurple);
+    } else if (currentThemeColor === "darkRed") {
+      setInUseImage(inUseRed);
+    } else if (currentThemeColor === "darkSkyBlue") {
+      setInUseImage(inUseSkyBlue);
+    }
+  }, []);
+
+  let isPremium = (userInfo?.premium)
+
 
   return (
     <Container>
@@ -120,8 +155,12 @@ export const Home = () => {
         <HomeCenterImage src={images[alNum]} alt="aleatory anime" />
       </MainHome>
       <ShopHome>
-        <ShopItemFree />
-        <ShopItemPremium showModal={showModal} setShowModal={setShowModal} />
+        <ShopItemFree inUseImage={isPremium === false || userInfo === null ? inUseImage : undefined } />
+        <ShopItemPremium
+          showModal={showModal}
+          setShowModal={setShowModal}
+          inUseImage={isPremium === true ? inUseImage : undefined }
+        />
       </ShopHome>
     </Container>
   );

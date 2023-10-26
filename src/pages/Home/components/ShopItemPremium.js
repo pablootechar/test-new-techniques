@@ -3,6 +3,8 @@ import { Check } from "phosphor-react";
 import { shade } from "polished";
 import { styled } from "styled-components";
 import DatabaseApi from "../../../shared/DatabaseApi";
+import { InUseImage } from "./InUseImage";
+import { useEffect } from "react";
 
 const ListOfBenefits = styled.div`
   position: relative;
@@ -164,6 +166,14 @@ const ListButton = styled.button`
     border: 2px solid rgba(255, 255, 255, 0.479);
     background-color: ${({ theme }) => theme.representativeColor};
   }
+
+  &:disabled {
+    color: #c9c9c9;
+    font-style: italic;
+    border: 2px solid ${({ theme }) => shade(0.6, theme.representativeColor)};
+    background: ${({ theme }) => shade(0.6, theme.representativeColor)};
+    pointer-events: none;
+  }
 `;
 
 const ItemPrice = styled.span`
@@ -173,10 +183,18 @@ const ItemPrice = styled.span`
   margin-bottom: 8px;
 `;
 
-export const ShopItemPremium = ({showModal, setShowModal}) => {
+export const ShopItemPremium = ({ showModal, setShowModal, inUseImage = undefined }) => {
+  useEffect(() => {
+    if (inUseImage !== undefined) {
+      document.getElementById("list-premium-button").disabled = true;
+    }
+  }, []);
 
   return (
     <ShopItem>
+      {typeof inUseImage !== "undefined" && (
+        <InUseImage src={inUseImage} alt="" />
+      )}
       <ListOfBenefits>
         <InfoPlan />
         <ListItems>
@@ -202,20 +220,24 @@ export const ShopItemPremium = ({showModal, setShowModal}) => {
             <i>Subscribe for $5/month</i>
           </ItemPrice>
           <ListButton
-          onClick={async () => {
-              let userId = localStorage.getItem("@animatrix/profile") !== null ? JSON.parse(localStorage.getItem("@animatrix/profile")) : "deslogado bro";
+            id="list-premium-button"
+            onClick={async () => {
+              let userId =
+                localStorage.getItem("@animatrix/profile") !== null
+                  ? JSON.parse(localStorage.getItem("@animatrix/profile"))
+                  : "deslogado bro";
 
               if (userId === "deslogado bro") {
-                  // alert("crie ou logue em uma conta primeiro");
-                  setShowModal(!showModal)
-                  return;
+                // alert("crie ou logue em uma conta primeiro");
+                setShowModal(!showModal);
+                return;
               }
               const email = SHA512(userId?.email).toString();
               const { id, name } = await DatabaseApi.isLogged(email);
               const url = `https://api.whatsapp.com/send?phone=5514996745539&text=Hi,%20all%20right?%20I'm%20${name} (${id})%20and%20would%20like%20to%20subscribe%20to%20the%20site's%20premium%20plan.%20How%20do%20I%20do%20it?`;
 
               window.open(url, "_blank");
-          }}
+            }}
           >
             Buy
           </ListButton>

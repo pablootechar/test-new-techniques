@@ -10,7 +10,7 @@ import Login from "./pages/Profile/Login";
 import { RedirectToHomePage } from "./Redirect";
 
 function App() {
-  const [currentTheme, setCurrentTheme] = useState(darkCyan);
+  const [currentTheme, setCurrentTheme] = useState(darkSkyBlue);
   
   useState(() => {
     const localStorageTheme = localStorage.getItem("@animatrix/theme");

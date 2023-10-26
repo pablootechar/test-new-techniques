@@ -1,5 +1,8 @@
 import { Check, X } from "phosphor-react";
 import { styled } from "styled-components";
+import { InUseImage } from "./InUseImage";
+import { shade } from "polished";
+import { useEffect } from "react";
 
 const InfoPlanDiv = styled.div`
   display: flex;
@@ -87,10 +90,18 @@ const ListButton = styled.button`
   border-radius: 20vw;
   cursor: pointer;
   transition: all 0.5s ease;
-
+  
   &:hover {
     border: 2px solid rgba(255, 255, 255, 0.479);
     background-color: ${({ theme }) => theme.representativeColor};
+  }
+  
+  &:disabled {
+    color: #c9c9c9;
+    font-style: italic;
+    border: 2px solid ${({ theme }) => shade(0.6, theme.representativeColor)};
+    background: ${({ theme }) => shade(0.6, theme.representativeColor)};
+    pointer-events: none;
   }
 `;
 
@@ -126,9 +137,19 @@ const InfoPlan = () => {
     </InfoPlanDiv>
   );
 };
-export const ShopItemFree = () => {
+
+export const ShopItemFree = ({inUseImage = undefined}) => {
+  useEffect(() => {
+    if (inUseImage !== undefined) {
+      document.getElementById("list-free-button").disabled = true;
+    }
+  }, []);
+
   return (
     <ShopItem>
+      {typeof inUseImage !== "undefined" && (
+        <InUseImage src={inUseImage} alt="" />
+      )}
       <ListOfBenefits>
         <InfoPlan />
         <ListItems>
@@ -150,10 +171,7 @@ export const ShopItemFree = () => {
           </Item>
         </ListItems>
         <ListButtonGroup>
-          <li>
-            <i> </i>
-          </li>
-          <ListButton>Free</ListButton>
+          <ListButton id="list-free-button">Free</ListButton>
         </ListButtonGroup>
       </ListOfBenefits>
     </ShopItem>
