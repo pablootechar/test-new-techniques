@@ -23,6 +23,8 @@ import inUsePink from "./assets/inuse_images/inuse_pink.png";
 import inUsePurple from "./assets/inuse_images/inuse_purple.png";
 import inUseRed from "./assets/inuse_images/inuse_red.png";
 import inUseSkyBlue from "./assets/inuse_images/inuse_skyblue.png";
+import inUseOrange from "./assets/inuse_images/inuse_orange.png";
+import inUseYellow from "./assets/inuse_images/inuse_yellow.png";
 
 const DivHomeTitle = styled.div`
   position: absolute;
@@ -132,6 +134,10 @@ export const Home = () => {
       setInUseImage(inUseRed);
     } else if (currentThemeColor === "darkSkyBlue") {
       setInUseImage(inUseSkyBlue);
+    } else if (currentThemeColor === "darkOrange") {
+      setInUseImage(inUseOrange);
+    } else if (currentThemeColor === "darkYellow") {
+      setInUseImage(inUseYellow);
     }
   }, []);
 
