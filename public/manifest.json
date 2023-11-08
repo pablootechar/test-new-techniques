@@ -23,5 +23,31 @@
   "theme_color": "#000000",
   "background_color": "#000000",
   "id": "Animatrix",
-  "description": "The project is an Anime Streaming and Manga Reading website, developed as a course completion work at my school (ETEC Waldyr Duron Jr.)"
+  "description": "The project is an Anime Streaming and Manga Reading website, developed as a course completion work at my school (ETEC Waldyr Duron Jr.)",
+  "lang": "en",
+  "categories": [
+    "entertainment"
+  ],
+  "screenshots": [
+    {
+      "src": "./animatrix_home.png",
+      "sizes": "750x1334",
+      "type": "image/png"
+    },
+    {
+      "src": "./anime_home_loading.png",
+      "sizes": "750x1334",
+      "type": "image/png"
+    },
+    {
+      "src": "./anime_home_loaded.png",
+      "sizes": "750x1334",
+      "type": "image/png"
+    },
+    {
+      "src": "./animatrix_profile.png",
+      "sizes": "750x1334",
+      "type": "image/png"
+    }
+  ]
 }
