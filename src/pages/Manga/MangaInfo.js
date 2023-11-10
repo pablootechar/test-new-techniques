@@ -87,15 +87,15 @@ export const MangaInfo = () => {
   const chapter = [
     {
       id: 1,
-      chapterNumber: 0,
-    },
-    {
-      id: 2,
       chapterNumber: 1,
     },
     {
-      id: 3,
+      id: 2,
       chapterNumber: 2,
+    },
+    {
+      id: 3,
+      chapterNumber: 3,
     },
   ];
 
