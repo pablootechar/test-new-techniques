@@ -16,25 +16,20 @@ const MangaReadScreen = styled.div`
 export const ReadChapterOfManga = () => {
   const [allPages, setAllPages] = useState();
   const { name: MangaId, chapterNum } = useParams();
+  const nameOfManga = MangaId.replace("-", "_");
 
   useEffect(() => {
     async function request() {
-      const chapter = await DatabaseApi.getPages(MangaId, chapterNum);
+      const chapter = await DatabaseApi.getPages(nameOfManga, chapterNum);
       setAllPages(chapter);
     }
-
     request();
   }, []);
 
-  function replaceURLSnippet(url) {
-    const replacementPattern = 'avif/[^/]+/'; // Regular expression for "avif/[anything]/"
-    const replacement = 'firefox/';
+  function replaceURLSnippet(imageName) {
+    const imagePath = `/manga_pages/${nameOfManga}/pags/${imageName}`;
 
-    const standard = new RegExp(replacementPattern, 'i');
-    let urlReplaced = url.replace(standard, replacement);
-
-    let urlConvertedToJpg = urlReplaced.replace(".avif", "");
-    return urlConvertedToJpg;
+    return imagePath;
   }
 
   return (

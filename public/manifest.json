@@ -20,6 +20,7 @@
   ],
   "start_url": "/home",
   "display": "standalone",
+  "prefer_related_applications": true,
   "theme_color": "#000000",
   "background_color": "#000000",
   "id": "Animatrix",
