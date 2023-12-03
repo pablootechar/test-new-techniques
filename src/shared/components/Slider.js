@@ -101,6 +101,7 @@ export const Slider = React.memo(
       }
 
       if (redirectTo === "manga") {
+        setShowAlternativeLoading(false);
         return navigate(`/manga-page/${animeId}/${allData?.attributes?.slug}/`);
       }
 
@@ -117,6 +118,7 @@ export const Slider = React.memo(
                   "@animatrix/current-page",
                   `/anime-page/${animeId}/${redirectUrl}/`
                 );
+                setShowAlternativeLoading(false);
                 navigate(`/anime-page/${animeId}/${redirectUrl}/`);
               });
             } else {
@@ -124,6 +126,7 @@ export const Slider = React.memo(
                 "@animatrix/current-page",
                 `/anime-page/${animeId}/${theRealAnimeSlug}/`
               );
+              setShowAlternativeLoading(false);
               navigate(`/anime-page/${animeId}/${theRealAnimeSlug}/`);
             }
           }
