@@ -1,0 +1,25 @@
+INSERT INTO animatrix.mangalist
+(id, idmanga, mangacap, idpag, mangapag) 
+VALUES 
+('37', 'karakai_jouzu_no_moto_takagi_san', '1', '1', 'karakai_jouzu_no_moto_takagi_san_cap_1_1.jpg'),
+('37', 'karakai_jouzu_no_moto_takagi_san', '1', '2', 'karakai_jouzu_no_moto_takagi_san_cap_1_2.jpg'),
+('37', 'karakai_jouzu_no_moto_takagi_san', '1', '3', 'karakai_jouzu_no_moto_takagi_san_cap_1_3.jpg'),
+('37', 'karakai_jouzu_no_moto_takagi_san', '1', '4', 'karakai_jouzu_no_moto_takagi_san_cap_1_4.jpg'),
+('37', 'karakai_jouzu_no_moto_takagi_san', '1', '5', 'karakai_jouzu_no_moto_takagi_san_cap_1_5.jpg'),
+('37', 'karakai_jouzu_no_moto_takagi_san', '1', '6', 'karakai_jouzu_no_moto_takagi_san_cap_1_6.jpg'),
+('37', 'karakai_jouzu_no_moto_takagi_san', '1', '7', 'karakai_jouzu_no_moto_takagi_san_cap_1_7.jpg'),
+('37', 'karakai_jouzu_no_moto_takagi_san', '2', '1', 'karakai_jouzu_no_moto_takagi_san_cap_2_1.jpg'),
+('37', 'karakai_jouzu_no_moto_takagi_san', '2', '2', 'karakai_jouzu_no_moto_takagi_san_cap_2_2.jpg'),
+('37', 'karakai_jouzu_no_moto_takagi_san', '2', '3', 'karakai_jouzu_no_moto_takagi_san_cap_2_3.jpg'),
+('37', 'karakai_jouzu_no_moto_takagi_san', '2', '4', 'karakai_jouzu_no_moto_takagi_san_cap_2_4.jpg'),
+('37', 'karakai_jouzu_no_moto_takagi_san', '2', '5', 'karakai_jouzu_no_moto_takagi_san_cap_2_5.jpg'),
+('37', 'karakai_jouzu_no_moto_takagi_san', '2', '6', 'karakai_jouzu_no_moto_takagi_san_cap_2_6.jpg'),
+('37', 'karakai_jouzu_no_moto_takagi_san', '2', '7', 'karakai_jouzu_no_moto_takagi_san_cap_2_7.jpg'),
+('37', 'karakai_jouzu_no_moto_takagi_san', '3', '1', 'karakai_jouzu_no_moto_takagi_san_cap_3_1.jpg'),
+('37', 'karakai_jouzu_no_moto_takagi_san', '3', '2', 'karakai_jouzu_no_moto_takagi_san_cap_3_2.jpg'),
+('37', 'karakai_jouzu_no_moto_takagi_san', '3', '3', 'karakai_jouzu_no_moto_takagi_san_cap_3_3.jpg'),
+('37', 'karakai_jouzu_no_moto_takagi_san', '3', '4', 'karakai_jouzu_no_moto_takagi_san_cap_3_4.jpg'),
+('37', 'karakai_jouzu_no_moto_takagi_san', '3', '5', 'karakai_jouzu_no_moto_takagi_san_cap_3_5.jpg'),
+('37', 'karakai_jouzu_no_moto_takagi_san', '3', '6', 'karakai_jouzu_no_moto_takagi_san_cap_3_6.jpg'),
+('37', 'karakai_jouzu_no_moto_takagi_san', '3', '7', 'karakai_jouzu_no_moto_takagi_san_cap_3_7.jpg'),
+('37', 'karakai_jouzu_no_moto_takagi_san', '3', '8', 'karakai_jouzu_no_moto_takagi_san_cap_3_8.jpg');

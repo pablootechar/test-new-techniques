@@ -79,27 +79,36 @@ const replaceTitle = (animeName) => {
   return replacedText;
 };
 
-export const Slider = React.memo(({ title, animes = undefined, redirectTo = "", databaseRequest, showModal, setShowModal, setShowAlternativeLoading = false }) => {
-
-  const navigate = useNavigate();
+export const Slider = React.memo(
+  ({
+    title,
+    animes = undefined,
+    redirectTo = "",
+    databaseRequest,
+    showModal,
+    setShowModal,
+    setShowAlternativeLoading = false,
+  }) => {
+    const navigate = useNavigate();
 
     const redirectPage = async (allData, animeId, animeName, animeShowType) => {
       setShowAlternativeLoading(true);
 
       let name = animeName;
+
       if (animeShowType === "TV") {
         name = `${name} (TV)`;
+      }
+
+      if (redirectTo === "manga") {
+        return navigate(`/manga-page/${animeId}/${allData?.attributes?.slug}/`);
       }
 
       await Api.getIdInGogoAnimeApi(name, 0)
         .then((response) => {
           const theRealAnimeSlug = response?.results[0]?.id;
-  
-          async function test() {
-            if (allData.type === "manga") {
-              return navigate(`/manga-page/${animeId}/${allData?.attributes?.slug}/`);
-            }
 
+          async function test() {
             if (typeof theRealAnimeSlug === "undefined") {
               await Api.getIdInGogoAnimeApi(animeName, 0).then((response) => {
                 let redirectUrl = response.results[0]?.id;
@@ -109,7 +118,7 @@ export const Slider = React.memo(({ title, animes = undefined, redirectTo = "", 
                   `/anime-page/${animeId}/${redirectUrl}/`
                 );
                 navigate(`/anime-page/${animeId}/${redirectUrl}/`);
-              })
+              });
             } else {
               localStorage.setItem(
                 "@animatrix/current-page",
@@ -151,7 +160,12 @@ export const Slider = React.memo(({ title, animes = undefined, redirectTo = "", 
                     />
                     <ItemInfo
                       onClick={() => {
-                        redirectPage(infoCard, infoCard.id, infoCard.attributes?.titles?.en_jp, infoCard.attributes?.showType);
+                        redirectPage(
+                          infoCard,
+                          infoCard.id,
+                          infoCard.attributes?.titles?.en_jp,
+                          infoCard.attributes?.showType
+                        );
                       }}
                     >
                       <IncorporateAnImage>

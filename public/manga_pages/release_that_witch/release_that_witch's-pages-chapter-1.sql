@@ -1,0 +1,27 @@
+INSERT INTO animatrix.mangalist
+(id, idmanga, mangacap, idpag, mangapag) 
+VALUES 
+('12', 'release_that_witch', '1', '1', 'release_that_witch_1_1.jpg'),
+('12', 'release_that_witch', '1', '2', 'release_that_witch_1_2.jpg'),
+('12', 'release_that_witch', '1', '3', 'release_that_witch_1_3.jpg'),
+('12', 'release_that_witch', '1', '4', 'release_that_witch_1_4.jpg'),
+('12', 'release_that_witch', '1', '5', 'release_that_witch_1_5.jpg'),
+('12', 'release_that_witch', '1', '6', 'release_that_witch_1_6.jpg'),
+('12', 'release_that_witch', '1', '7', 'release_that_witch_1_7.jpg'),
+('12', 'release_that_witch', '1', '8', 'release_that_witch_1_8.jpg'),
+('12', 'release_that_witch', '2', '1', 'release_that_witch_2_1.jpg'),
+('12', 'release_that_witch', '2', '2', 'release_that_witch_2_2.jpg'),
+('12', 'release_that_witch', '2', '3', 'release_that_witch_2_3.jpg'),
+('12', 'release_that_witch', '2', '4', 'release_that_witch_2_4.jpg'),
+('12', 'release_that_witch', '2', '5', 'release_that_witch_2_5.jpg'),
+('12', 'release_that_witch', '2', '6', 'release_that_witch_2_6.jpg'),
+('12', 'release_that_witch', '2', '7', 'release_that_witch_2_7.jpg'),
+('12', 'release_that_witch', '2', '8', 'release_that_witch_2_8.jpg'),
+('12', 'release_that_witch', '3', '1', 'release_that_witch_3_1.jpg'),
+('12', 'release_that_witch', '3', '2', 'release_that_witch_3_2.jpg'),
+('12', 'release_that_witch', '3', '3', 'release_that_witch_3_3.jpg'),
+('12', 'release_that_witch', '3', '4', 'release_that_witch_3_4.jpg'),
+('12', 'release_that_witch', '3', '5', 'release_that_witch_3_5.jpg'),
+('12', 'release_that_witch', '3', '6', 'release_that_witch_3_6.jpg'),
+('12', 'release_that_witch', '3', '7', 'release_that_witch_3_7.jpg'),
+('12', 'release_that_witch', '3', '8', 'release_that_witch_3_8.jpg');
